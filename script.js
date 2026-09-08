@@ -4,21 +4,20 @@
 // ============================================================
 const profile = {
     // --- IDENTIDAD ---
-    name: "Síguenos en nuestras redes sociales", // <-- CAMBIAR NOMBRE
-    description: "XoloTech | Grupo de Ingenieros en Sistemas Computacionales Desarrollamos soluciones tecnológicas para impulsar tu negocio", // <-- CAMBIAR DESCRIPCIÓN
+    name: "Síguenos en nuestras redes sociales",
+    description: "XoloTech | Grupo de Ingenieros en Sistemas Computacionales Desarrollamos soluciones tecnológicas para impulsar tu negocio",
     
     // --- IMÁGENES ---
     logo: "img/logo.png", // <-- CAMBIAR LOGO (2000x2000px)
-    background: "img/fondo.png", // <-- CAMBIAR IMAGEN DE FONDO (9:16)
+    
+    // --- VIDEO DE FONDO ---
+    backgroundVideo: "img/fondo.mp4", // <-- CAMBIAR VIDEO DE FONDO (MP4 recomendado)
     
     // --- CONFIGURACIÓN DE FONDO ---
     backgroundSettings: {
-        opacity: 0.85, // <-- OPACIDAD DE LA IMAGEN DE FONDO (0-1)
         overlayOpacity: 0.35, // <-- OPACIDAD DE LA CAPA OSCURA (0-1)
-        filter: 'brightness(1.1) saturate(1.2)', // <-- FILTROS PARA MEJORAR LA IMAGEN
-        position: 'center center', // <-- POSICIÓN DE LA IMAGEN
-        size: 'cover', // <-- TAMAÑO DE LA IMAGEN: cover, contain, 100% 100%
-        repeat: 'no-repeat' // <-- REPETICIÓN DE LA IMAGEN
+        position: 'center center', // <-- POSICIÓN DEL VIDEO
+        size: 'cover' // <-- TAMAÑO DEL VIDEO: cover, contain
     },
 
     // --- REDES SOCIALES ---
@@ -56,54 +55,66 @@ const profile = {
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     
-    // Aplicar imagen de fondo con configuración personalizada
-    if (profile.background) {
-        body.style.backgroundImage = `url('${profile.background}')`;
+    // --- VIDEO DE FONDO ---
+    if (profile.backgroundVideo) {
+        // Crear contenedor del video
+        const videoContainer = document.createElement('div');
+        videoContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        `;
+
+        // Crear elemento video
+        const video = document.createElement('video');
+        video.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+        `;
         
-        // Aplicar configuraciones de fondo si existen
-        if (profile.backgroundSettings) {
-            const settings = profile.backgroundSettings;
-            
-            // Configurar opacidad de la imagen de fondo
-            if (settings.opacity) {
-                body.style.opacity = settings.opacity;
-            }
-            
-            // Configurar filtros
-            if (settings.filter) {
-                body.style.filter = settings.filter;
-            }
-            
-            // Configurar posición
-            if (settings.position) {
-                body.style.backgroundPosition = settings.position;
-            }
-            
-            // Configurar tamaño
-            if (settings.size) {
-                body.style.backgroundSize = settings.size;
-            }
-            
-            // Configurar repetición
-            if (settings.repeat) {
-                body.style.backgroundRepeat = settings.repeat;
-            }
-            
-            // Crear capa oscura con opacidad configurable
-            if (settings.overlayOpacity !== undefined) {
-                const overlay = document.createElement('div');
-                overlay.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(0, 0, 0, ${settings.overlayOpacity});
-                    z-index: 1;
-                    pointer-events: none;
-                `;
-                document.body.appendChild(overlay);
-            }
+        // Configurar video
+        video.src = profile.backgroundVideo;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('aria-hidden', 'true');
+        
+        // Agregar video al contenedor
+        videoContainer.appendChild(video);
+        
+        // Agregar contenedor al body
+        document.body.prepend(videoContainer);
+        
+        // Asegurar que el body tenga posición relativa para el z-index
+        body.style.position = 'relative';
+        body.style.zIndex = '1';
+        
+        // Agregar capa oscura sobre el video si está configurada
+        if (profile.backgroundSettings && profile.backgroundSettings.overlayOpacity !== undefined) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, ${profile.backgroundSettings.overlayOpacity});
+                z-index: 1;
+                pointer-events: none;
+            `;
+            document.body.appendChild(overlay);
         }
     }
     
@@ -122,32 +133,24 @@ document.addEventListener('DOMContentLoaded', () => {
     socialLinksContainer.innerHTML = '';
 
     profile.socialLinks.forEach((link, index) => {
-        // Crear elemento <a>
         const linkElement = document.createElement('a');
         linkElement.href = link.url;
         linkElement.target = "_blank";
         linkElement.rel = "noopener noreferrer";
         linkElement.className = 'social-button';
-        
-        // Establecer retraso de animación
         linkElement.style.animationDelay = `${0.6 + index * 0.2}s`;
 
-        // Crear icono
         const iconElement = document.createElement('i');
         iconElement.className = link.icon;
         if (link.color) {
             iconElement.style.color = link.color;
         }
 
-        // Crear span para el texto
         const spanElement = document.createElement('span');
         spanElement.textContent = link.name;
 
-        // Agregar icono y texto al enlace
         linkElement.appendChild(iconElement);
         linkElement.appendChild(spanElement);
-
-        // Agregar botón al contenedor
         socialLinksContainer.appendChild(linkElement);
     });
 });
