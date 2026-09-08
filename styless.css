@@ -1,0 +1,554 @@
+/* ============================================================
+   VARIABLES GLOBALES (Personalización fácil desde CSS)
+   ============================================================ */
+:root {
+    /* Colores principales */
+    --text-color: #ffffff;
+    --name-color: #FFD700; /* Amarillo dorado para el nombre */
+    --text-shadow-strong: 2px 2px 4px rgba(0, 0, 0, 0.9), -1px -1px 3px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
+    --text-shadow-medium: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
+    --text-shadow-light: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    
+    /* Botones */
+    --button-bg-color: rgba(255, 255, 255, 0.12);
+    --button-hover-bg-color: rgba(255, 255, 255, 0.25);
+    --button-border: 2px solid rgba(255, 255, 255, 0.4);
+    --button-hover-border: 2px solid rgba(255, 255, 255, 0.8);
+    --button-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    --button-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+    
+    /* Fondo exterior - MÁS CLARO */
+    --overlay-color: rgba(0, 0, 0, 0.20);
+    --overlay-gradient: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.20) 50%, rgba(0,0,0,0.25) 100%);
+    
+    /* Tipografía */
+    --font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --name-font-size: 2.8rem;
+    --name-font-weight: 900;
+    --description-font-size: 1.15rem;
+    --description-font-weight: 500;
+    --button-font-size: 1.1rem;
+    --button-font-weight: 700;
+    
+    /* Dimensiones */
+    --logo-size: 150px;
+    --container-max-width: 520px;
+    --button-padding: 16px 24px;
+    --border-radius: 18px;
+    
+    /* Glassmorphism del contenedor - MÁS OPACO */
+    --glass-bg: rgba(0, 0, 0, 0.65);
+    --glass-border: 3px solid rgba(255, 255, 255, 0.35);
+    --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.15) inset;
+    --glass-backdrop: blur(25px) saturate(180%);
+    --glass-radius: 30px;
+}
+
+/* ============================================================
+   RESET BÁSICO Y ESTILOS GENERALES
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: #000;
+    
+    /* La imagen de fondo se adapta a la pantalla */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    /* Ajuste para áreas seguras en dispositivos con notch */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* En móvil, eliminar background-attachment: fixed para mejor rendimiento */
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+
+/* Capa oscura exterior - MUY SUTIL */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-gradient);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL - MÁS OPACO PARA LEGIBILIDAD
+   ============================================================ */
+.main-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 20px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    
+    /* Glassmorphism premium con contorno definido */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    
+    /* Animación de entrada */
+    animation: containerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================
+   ESTILOS PARA EL LOGO MEJORADO
+   ============================================================ */
+.profile-logo {
+    margin: 0 auto 1.8rem;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.profile-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    
+    /* Sombra simple y limpia */
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+    
+    /* Animación de entrada suave */
+    animation: logoIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+    
+    /* Transición para hover */
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Efecto hover suave en el logo */
+.profile-logo img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6));
+}
+
+/* ============================================================
+   ESTILOS PARA EL NOMBRE - AMARILLO CON SOMBRAS NEGRAS
+   ============================================================ */
+.profile-name {
+    font-size: var(--name-font-size);
+    font-weight: var(--name-font-weight);
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    
+    /* Color amarillo dorado */
+    color: var(--name-color);
+    
+    /* Sombras negras bien definidas */
+    text-shadow: 
+        2px 2px 0 #000000,
+        -1px -1px 0 #000000,
+        1px -1px 0 #000000,
+        -1px 1px 0 #000000,
+        0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(0, 0, 0, 0.5);
+    
+    /* Animación de entrada */
+    animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+/* ============================================================
+   ESTILOS PARA LA DESCRIPCIÓN
+   ============================================================ */
+.profile-description {
+    font-size: var(--description-font-size);
+    font-weight: var(--description-font-weight);
+    margin-bottom: 2.2rem;
+    line-height: 1.7;
+    opacity: 1;
+    color: #ffffff;
+    text-shadow: var(--text-shadow-medium);
+    letter-spacing: 0.3px;
+    
+    /* Animación de entrada */
+    animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+/* ============================================================
+   ESTILOS PARA LOS BOTONES MEJORADOS
+   ============================================================ */
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    
+    /* Botones con fondo semi-transparente */
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
+    padding: var(--button-padding);
+    border-radius: var(--border-radius);
+    border: var(--button-border);
+    box-shadow: var(--button-shadow);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Animación de entrada */
+    animation: buttonIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Delays para animación escalonada */
+.social-button:nth-child(1) { animation-delay: 0.9s; }
+.social-button:nth-child(2) { animation-delay: 1.1s; }
+.social-button:nth-child(3) { animation-delay: 1.3s; }
+.social-button:nth-child(4) { animation-delay: 1.5s; }
+.social-button:nth-child(5) { animation-delay: 1.7s; }
+.social-button:nth-child(6) { animation-delay: 1.9s; }
+.social-button:nth-child(7) { animation-delay: 2.1s; }
+.social-button:nth-child(8) { animation-delay: 2.3s; }
+
+/* Efecto hover mejorado */
+@media (hover: hover) {
+    .social-button:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border: var(--button-hover-border);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: var(--button-hover-shadow);
+    }
+}
+
+/* Efecto al presionar */
+.social-button:active {
+    transform: scale(0.95);
+    transition-duration: 0.15s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Efecto de brillo sutil */
+.social-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.social-button:hover::before {
+    left: 100%;
+}
+
+/* Iconos con animación */
+.social-button i {
+    font-size: 1.5em;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    text-align: center;
+    
+    /* Sombra simple */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    
+    /* Transición suave */
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Animación del icono al hover */
+.social-button:hover i {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Texto del botón */
+.social-button span {
+    flex: 1;
+    text-align: center;
+    margin-right: 35px;
+    text-shadow: var(--text-shadow-light);
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ============================================================
+   ANIMACIONES MEJORADAS
+   ============================================================ */
+@keyframes containerIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes logoIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes textIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes buttonIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================================
+   MEDIA QUERIES OPTIMIZADAS PARA MÓVIL
+   ============================================================ */
+
+/* Para pantallas muy pequeñas (320px) */
+@media (max-width: 360px) {
+    :root {
+        --logo-size: 100px;
+        --name-font-size: 2.2rem;
+        --description-font-size: 0.95rem;
+        --button-font-size: 1rem;
+        --button-padding: 14px 18px;
+        --container-max-width: 100%;
+        --glass-radius: 25px;
+        --glass-border: 2px solid rgba(255, 255, 255, 0.4);
+        --button-border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .main-container {
+        padding: 1.8rem 1.2rem;
+        margin: 12px;
+    }
+    
+    .social-button {
+        gap: 10px;
+        border-radius: 16px;
+    }
+    
+    .social-button i {
+        width: 30px;
+        height: 30px;
+        font-size: 1.3em;
+    }
+    
+    .social-button span {
+        margin-right: 30px;
+        font-size: 0.95rem;
+    }
+    
+    .profile-name {
+        letter-spacing: -0.3px;
+    }
+}
+
+/* Para pantallas medianas (375px y 414px) */
+@media (min-width: 361px) and (max-width: 480px) {
+    :root {
+        --logo-size: 130px;
+        --container-max-width: 100%;
+        --glass-radius: 28px;
+        --glass-border: 3px solid rgba(255, 255, 255, 0.35);
+        --button-border: 2px solid rgba(255, 255, 255, 0.45);
+    }
+    
+    .main-container {
+        padding: 2rem 1.5rem;
+        margin: 15px;
+    }
+    
+    .social-button {
+        padding: 15px 22px;
+    }
+}
+
+/* Para pantallas grandes de móvil (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    :root {
+        --logo-size: 150px;
+        --name-font-size: 2.8rem;
+        --description-font-size: 1.15rem;
+        --button-font-size: 1.15rem;
+    }
+    
+    .main-container {
+        padding: 2.5rem 2rem;
+        margin: 20px;
+    }
+}
+
+/* Para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --logo-size: 160px;
+        --name-font-size: 3rem;
+        --description-font-size: 1.2rem;
+        --button-font-size: 1.2rem;
+    }
+    
+    .main-container {
+        padding: 3rem 2.5rem;
+    }
+}
+
+/* Para computadoras de escritorio */
+@media (min-width: 1025px) {
+    :root {
+        --logo-size: 150px;
+        --name-font-size: 3rem;
+        --description-font-size: 1.2rem;
+        --button-font-size: 1.15rem;
+    }
+    
+    .main-container {
+        padding: 3rem 2.5rem;
+        max-width: 500px;
+    }
+    
+    .social-links {
+        gap: 1.1rem;
+    }
+}
+
+/* Para pantallas ultra anchas */
+@media (min-width: 1440px) {
+    :root {
+        --logo-size: 170px;
+        --name-font-size: 3.2rem;
+        --description-font-size: 1.25rem;
+        --button-font-size: 1.2rem;
+    }
+    
+    .main-container {
+        padding: 3.5rem 3rem;
+        max-width: 550px;
+    }
+}
+
+/* ============================================================
+   OPTIMIZACIONES PARA DISPOSITIVOS TÁCTILES
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Botones más grandes para mejor interacción táctil */
+    .social-button {
+        min-height: 56px;
+        padding: 16px 20px;
+    }
+    
+    /* Eliminar hover effects en móvil */
+    .social-button:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border: var(--button-border);
+        transform: none;
+        box-shadow: var(--button-shadow);
+    }
+    
+    /* Efecto táctil más suave */
+    .social-button:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.25);
+    }
+    
+    /* Prevenir zoom en inputs */
+    input, textarea, select {
+        font-size: 16px;
+    }
+}
+
+/* ============================================================
+   ACCESIBILIDAD Y PREFERENCIAS DEL SISTEMA
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mejorar contraste para accesibilidad */
+@media (prefers-contrast: high) {
+    :root {
+        --text-shadow-strong: 2px 2px 0 #000000;
+        --button-bg-color: rgba(0, 0, 0, 0.7);
+        --button-border: 3px solid rgba(255, 255, 255, 0.7);
+        --glass-border: 3px solid rgba(255, 255, 255, 0.5);
+    }
+}
