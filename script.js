@@ -1,21 +1,20 @@
 // ============================================================
 // CONFIGURACIÓN PRINCIPAL DEL PERFIL
-// Cambia los valores de este objeto para personalizar la página.
 // ============================================================
 const profile = {
     // --- IDENTIDAD ---
     name: "Síguenos en nuestras redes sociales",
-    description: "XoloTech | Grupo de Ingenieros en Sistemas Computacionales Desarrollamos soluciones tecnológicas para impulsar tu negocio",
+    description: "XoloTech | Grupo de Ingenieros en Sistemas Computacionales. Desarrollamos soluciones tecnológicas para impulsar tu negocio",
     
     // --- IMÁGENES ---
-    logo: "img/logo.png", // <-- CAMBIAR LOGO (2000x2000px)
+    logo: "img/logo.png",
     
     // --- VIDEO DE FONDO (9:16 / 1080x1920 recomendado) ---
-    backgroundVideo: "img/fondo.mp4", // <-- CAMBIAR VIDEO DE FONDO (MP4 recomendado)
+    backgroundVideo: "img/fondo.mp4",
     
     // --- CONFIGURACIÓN DE FONDO ---
     backgroundSettings: {
-        overlayOpacity: 0.10, // <-- OPACIDAD DE LA CAPA OSCURA (0-1)
+        overlayOpacity: 0.10,
     },
 
     // --- REDES SOCIALES ---
@@ -48,76 +47,21 @@ const profile = {
 };
 
 // ============================================================
-// LÓGICA DE LA PÁGINA
+// LÓGICA DE LA PÁGINA - SIN ESTILOS INLINE
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    const body = document.body;
     let videoElement = null;
     let videoContainer = null;
     
-    // --- FUNCIÓN PARA CENTRAR VIDEO 9:16 ---
-    function centerVideo() {
-        if (!videoElement) return;
-        
-        const containerWidth = window.innerWidth;
-        const containerHeight = window.innerHeight;
-        const videoRatio = videoElement.videoWidth / videoElement.videoHeight;
-        
-        // Si es 9:16 (vertical)
-        if (videoRatio < 0.7) {
-            // El video debe cubrir todo el ancho y ajustar altura
-            videoElement.style.width = '100%';
-            videoElement.style.height = 'auto';
-            videoElement.style.minWidth = '100%';
-            videoElement.style.minHeight = 'auto';
-            videoElement.style.objectFit = 'cover';
-            
-            // Si la altura del contenedor es mayor que la del video, centrar verticalmente
-            const videoHeight = containerWidth / videoRatio;
-            if (videoHeight < containerHeight) {
-                videoElement.style.height = '100%';
-                videoElement.style.width = 'auto';
-                videoElement.style.minHeight = '100%';
-                videoElement.style.minWidth = 'auto';
-            }
-        }
-    }
-    
     // --- VIDEO DE FONDO ---
     if (profile.backgroundVideo) {
-        // Contenedor del video
+        // Contenedor del video (solo clases, sin estilos inline)
         videoContainer = document.createElement('div');
         videoContainer.className = 'video-background-container';
-        videoContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-            background-color: #000000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        `;
 
-        // Elemento video
+        // Elemento video (solo clases y atributos)
         videoElement = document.createElement('video');
-        videoElement.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: cover;
-            object-position: center center;
-        `;
-        
-        // Configurar video
+        videoElement.className = 'video-background';
         videoElement.src = profile.backgroundVideo;
         videoElement.autoplay = true;
         videoElement.loop = true;
@@ -128,38 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         videoElement.setAttribute('playsinline', '');
         videoElement.setAttribute('webkit-playsinline', '');
         
-        // Cuando el video esté cargado, centrarlo
-        videoElement.addEventListener('loadedmetadata', function() {
-            console.log(`📹 Video cargado - Aspect ratio: ${(this.videoWidth / this.videoHeight).toFixed(2)}`);
-            centerVideo();
-        });
-        
-        // También centrar cuando cambie el tamaño
-        window.addEventListener('resize', centerVideo);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(centerVideo, 300);
-        });
-        
-        videoContainer.appendChild(videoElement);
-        document.body.prepend(videoContainer);
-        
-        // Capa oscura
-        if (profile.backgroundSettings && profile.backgroundSettings.overlayOpacity !== undefined) {
-            const overlay = document.createElement('div');
-            overlay.className = 'video-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, ${profile.backgroundSettings.overlayOpacity});
-                z-index: 1;
-                pointer-events: none;
-            `;
-            document.body.appendChild(overlay);
-        }
-        
         // Manejar errores
         videoElement.addEventListener('error', function() {
             console.warn('⚠️ Error cargando el video de fondo');
@@ -167,6 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 videoContainer.style.backgroundColor = '#0a0a0a';
             }
         });
+        
+        videoContainer.appendChild(videoElement);
+        document.body.prepend(videoContainer);
+        
+        // Capa oscura (solo clase)
+        if (profile.backgroundSettings && profile.backgroundSettings.overlayOpacity !== undefined) {
+            const overlay = document.createElement('div');
+            overlay.className = 'video-overlay';
+            overlay.style.backgroundColor = `rgba(0, 0, 0, ${profile.backgroundSettings.overlayOpacity})`;
+            document.body.appendChild(overlay);
+        }
     }
     
     // --- FUNCIÓN PARA REANUDAR VIDEO ---
