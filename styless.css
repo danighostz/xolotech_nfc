@@ -1,51 +1,67 @@
 /* ============================================================
-   VARIABLES GLOBALES (Personalización fácil desde CSS)
+   VARIABLES GLOBALES - CENTRALIZADAS
    ============================================================ */
 :root {
-    /* Colores principales */
+    /* ==========================================================
+       🎯 CONTROL DE OPACIDAD
+       ========================================================== */
+    --container-opacity: 0.50;
+    --overlay-opacity: 0.08;
+    
+    /* ==========================================================
+       🎨 COLORES Y ESTILOS DEL LOGO
+       ========================================================== */
+    --logo-border-color: #FFD700;
+    --logo-shadow-color: rgba(255, 215, 0, 0.3);
+    --logo-glow-color: rgba(255, 215, 0, 0.15);
+    --logo-bg-color: rgba(0, 0, 0, 0.85);
+    
+    /* Colores principales - TEMA FUTURISTA */
     --text-color: #ffffff;
-    --name-color: #FFD700; /* Amarillo dorado para el nombre */
+    --name-color: #FFD700;
+    --accent-color: #00d4ff;
+    --accent-glow: rgba(0, 212, 255, 0.15);
+    
     --text-shadow-strong: 2px 2px 4px rgba(0, 0, 0, 0.9), -1px -1px 3px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
     --text-shadow-medium: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
     --text-shadow-light: 1px 1px 2px rgba(0, 0, 0, 0.7);
     
     /* Botones */
-    --button-bg-color: rgba(255, 255, 255, 0.12);
-    --button-hover-bg-color: rgba(255, 255, 255, 0.25);
-    --button-border: 2px solid rgba(255, 255, 255, 0.4);
-    --button-hover-border: 2px solid rgba(255, 255, 255, 0.8);
-    --button-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-    --button-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
-    
-    /* Fondo exterior - MÁS CLARO */
-    --overlay-color: rgba(0, 0, 0, 0.20);
-    --overlay-gradient: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.20) 50%, rgba(0,0,0,0.25) 100%);
+    --button-bg-color: rgba(255, 255, 255, 0.06);
+    --button-hover-bg-color: rgba(255, 255, 255, 0.15);
+    --button-border: 1.5px solid rgba(255, 215, 0, 0.25);
+    --button-hover-border: 1.5px solid rgba(255, 215, 0, 0.6);
+    --button-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 215, 0, 0.03) inset;
+    --button-hover-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 215, 0, 0.1) inset;
     
     /* Tipografía */
     --font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --name-font-size: 2.8rem;
-    --name-font-weight: 900;
-    --description-font-size: 1.15rem;
-    --description-font-weight: 500;
-    --button-font-size: 1.1rem;
-    --button-font-weight: 700;
+    --name-font-size: 1.6rem;
+    --name-font-weight: 700;
+    --description-font-size: 0.7rem;
+    --description-font-weight: 400;
+    --button-font-size: 0.75rem;
+    --button-font-weight: 600;
     
     /* Dimensiones */
-    --logo-size: 150px;
-    --container-max-width: 520px;
-    --button-padding: 16px 24px;
-    --border-radius: 18px;
+    --logo-size: 85px;
+    --logo-border-width: 3px;
+    --container-max-width: 320px;
+    --button-padding: 10px 14px;
+    --border-radius: 10px;
+    --container-padding: 1.4rem 1.2rem;
+    --container-margin: 12px;
     
-    /* Glassmorphism del contenedor - MÁS OPACO */
-    --glass-bg: rgba(0, 0, 0, 0.65);
-    --glass-border: 3px solid rgba(255, 255, 255, 0.35);
-    --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.15) inset;
-    --glass-backdrop: blur(25px) saturate(180%);
-    --glass-radius: 30px;
+    /* Glassmorphism */
+    --glass-bg: rgba(0, 0, 0, var(--container-opacity));
+    --glass-border: 1.5px solid rgba(255, 215, 0, 0.12);
+    --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.03) inset;
+    --glass-backdrop: blur(16px) saturate(150%);
+    --glass-radius: 20px;
 }
 
 /* ============================================================
-   RESET BÁSICO Y ESTILOS GENERALES
+   RESET BÁSICO
    ============================================================ */
 * {
     margin: 0;
@@ -65,15 +81,13 @@ body {
     width: 100%;
     font-family: var(--font-family);
     color: var(--text-color);
-    background-color: #000;
+    background-color: #0a0a0a;
     
-    /* La imagen de fondo se adapta a la pantalla */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     
-    /* Ajuste para áreas seguras en dispositivos con notch */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
@@ -83,44 +97,227 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow-x: hidden;
-}
-
-/* En móvil, eliminar background-attachment: fixed para mejor rendimiento */
-@media (max-width: 768px) {
-    body {
-        background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
-    }
-}
-
-/* Capa oscura exterior - MUY SUTIL */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--overlay-gradient);
-    z-index: 1;
-    pointer-events: none;
+    overflow: hidden;
 }
 
 /* ============================================================
-   CONTENEDOR PRINCIPAL - MÁS OPACO PARA LEGIBILIDAD
+   FONDO FUTURISTA PREMIUM - SOLO COMPUTADORAS
+   ============================================================ */
+@media (min-width: 1025px) {
+    /* Capa principal del fondo */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background: 
+            /* Gradientes de neón */
+            radial-gradient(ellipse at 15% 30%, rgba(0, 100, 255, 0.12) 0%, transparent 60%),
+            radial-gradient(ellipse at 85% 70%, rgba(200, 0, 255, 0.10) 0%, transparent 60%),
+            radial-gradient(ellipse at 50% 100%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.04) 0%, transparent 40%),
+            #0a0a0a;
+        pointer-events: none;
+    }
+    
+    /* Líneas de grid tipo código */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background-image: 
+            /* Líneas horizontales */
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 35px,
+                rgba(0, 212, 255, 0.03) 35px,
+                rgba(0, 212, 255, 0.03) 36px
+            ),
+            /* Líneas verticales */
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 45px,
+                rgba(0, 212, 255, 0.02) 45px,
+                rgba(0, 212, 255, 0.02) 46px
+            );
+        animation: gridScroll 30s linear infinite;
+        pointer-events: none;
+    }
+}
+
+/* ============================================================
+   ELEMENTOS DECORATIVOS FUTURISTAS
+   ============================================================ */
+@media (min-width: 1025px) {
+    /* Partículas flotantes */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: rgba(0, 212, 255, 0.3);
+        border-radius: 50%;
+        animation: particleFloat var(--duration) ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+    }
+    
+    .particle:nth-child(1) { --duration: 8s; top: 10%; left: 5%; animation-delay: 0s; }
+    .particle:nth-child(2) { --duration: 12s; top: 20%; left: 15%; animation-delay: 1s; width: 4px; height: 4px; }
+    .particle:nth-child(3) { --duration: 10s; top: 30%; left: 25%; animation-delay: 2s; }
+    .particle:nth-child(4) { --duration: 14s; top: 40%; left: 35%; animation-delay: 0.5s; width: 2px; height: 2px; }
+    .particle:nth-child(5) { --duration: 9s; top: 50%; left: 45%; animation-delay: 1.5s; }
+    .particle:nth-child(6) { --duration: 11s; top: 60%; left: 55%; animation-delay: 3s; width: 4px; height: 4px; }
+    .particle:nth-child(7) { --duration: 13s; top: 70%; left: 65%; animation-delay: 0.8s; }
+    .particle:nth-child(8) { --duration: 7s; top: 80%; left: 75%; animation-delay: 2.5s; width: 2px; height: 2px; }
+    .particle:nth-child(9) { --duration: 15s; top: 90%; left: 85%; animation-delay: 1.2s; }
+    .particle:nth-child(10) { --duration: 10s; top: 15%; left: 95%; animation-delay: 3.5s; width: 4px; height: 4px; }
+    .particle:nth-child(11) { --duration: 12s; top: 45%; left: 75%; animation-delay: 0.3s; }
+    .particle:nth-child(12) { --duration: 9s; top: 75%; left: 25%; animation-delay: 2s; width: 2px; height: 2px; }
+    .particle:nth-child(13) { --duration: 11s; top: 25%; left: 85%; animation-delay: 1.8s; }
+    .particle:nth-child(14) { --duration: 14s; top: 65%; left: 15%; animation-delay: 0.6s; width: 4px; height: 4px; }
+    .particle:nth-child(15) { --duration: 8s; top: 85%; left: 45%; animation-delay: 2.8s; }
+    
+    /* Círculos de neón decorativos */
+    .neon-ring {
+        position: fixed;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 212, 255, 0.06);
+        z-index: 0;
+        pointer-events: none;
+        animation: neonPulse 8s ease-in-out infinite;
+    }
+    
+    .neon-ring:nth-child(16) {
+        width: 300px;
+        height: 300px;
+        top: -100px;
+        right: -100px;
+        border-width: 2px;
+        animation-delay: 0s;
+    }
+    
+    .neon-ring:nth-child(17) {
+        width: 200px;
+        height: 200px;
+        bottom: -50px;
+        left: -50px;
+        border-color: rgba(255, 215, 0, 0.04);
+        animation-delay: 2s;
+    }
+    
+    .neon-ring:nth-child(18) {
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-color: rgba(200, 0, 255, 0.03);
+        animation-delay: 4s;
+    }
+}
+
+/* ============================================================
+   ANIMACIONES FUTURISTAS
+   ============================================================ */
+@keyframes gridScroll {
+    0% {
+        background-position: 0 0, 0 0;
+    }
+    100% {
+        background-position: 0 800px, 0 0;
+    }
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.2;
+    }
+    25% {
+        transform: translate(30px, -40px) scale(1.3);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-20px, 30px) scale(0.7);
+        opacity: 0.3;
+    }
+    75% {
+        transform: translate(40px, -20px) scale(1.1);
+        opacity: 0.6;
+    }
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        opacity: 0.8;
+        transform: scale(1.02) rotate(5deg);
+    }
+    50% {
+        opacity: 0.2;
+        transform: scale(0.98) rotate(-3deg);
+    }
+    75% {
+        opacity: 0.6;
+        transform: scale(1.01) rotate(3deg);
+    }
+}
+
+/* ============================================================
+   CAPA OSCURA EXTERIOR - SOLO MÓVILES/TABLETS
+   ============================================================ */
+@media (max-width: 1024px) {
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, 
+            rgba(0,0,0, calc(var(--overlay-opacity) * 0.7)) 0%, 
+            rgba(0,0,0, var(--overlay-opacity)) 50%, 
+            rgba(0,0,0, calc(var(--overlay-opacity) * 1.3)) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+}
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
    ============================================================ */
 .main-container {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: var(--container-max-width);
-    margin: 20px;
-    padding: 2.5rem 2rem;
+    margin: var(--container-margin);
+    padding: var(--container-padding);
     text-align: center;
     
-    /* Glassmorphism premium con contorno definido */
     background: var(--glass-bg);
     backdrop-filter: var(--glass-backdrop);
     -webkit-backdrop-filter: var(--glass-backdrop);
@@ -128,95 +325,130 @@ body::before {
     border-radius: var(--glass-radius);
     box-shadow: var(--glass-shadow);
     
-    /* Animación de entrada */
-    animation: containerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: containerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    
+    max-height: 90vh;
+    max-height: 90dvh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.main-container::-webkit-scrollbar {
+    display: none;
 }
 
 /* ============================================================
-   ESTILOS PARA EL LOGO MEJORADO
+   LOGO
    ============================================================ */
 .profile-logo {
-    margin: 0 auto 1.8rem;
+    margin: 0 auto 1rem;
     width: var(--logo-size);
     height: var(--logo-size);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    flex-shrink: 0;
+    
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, #FFD700, #F4A900, #FFD700, #DAA520);
+    background-size: 300% 300%;
+    animation: goldShine 4s ease-in-out infinite;
+    box-shadow: 
+        0 0 20px var(--logo-shadow-color),
+        0 0 40px var(--logo-glow-color),
+        inset 0 0 15px rgba(255, 215, 0, 0.08);
+}
+
+.profile-logo::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--logo-bg-color);
+    z-index: 0;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .profile-logo img {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
     object-fit: contain;
     display: block;
+    position: relative;
+    z-index: 1;
     
-    /* Sombra simple y limpia */
-    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
-    
-    /* Animación de entrada suave */
-    animation: logoIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-    
-    /* Transición para hover */
-    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
+    animation: logoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
 }
 
-/* Efecto hover suave en el logo */
 .profile-logo img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6));
+    transform: scale(1.06) rotate(3deg);
+    filter: drop-shadow(0 6px 20px rgba(255, 215, 0, 0.25));
+}
+
+.profile-logo::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, 
+        transparent 30%, 
+        rgba(255, 215, 0, 0.08) 50%, 
+        transparent 70%
+    );
+    z-index: 2;
+    pointer-events: none;
+    animation: goldGlow 3s ease-in-out infinite;
 }
 
 /* ============================================================
-   ESTILOS PARA EL NOMBRE - AMARILLO CON SOMBRAS NEGRAS
+   NOMBRE
    ============================================================ */
 .profile-name {
     font-size: var(--name-font-size);
     font-weight: var(--name-font-weight);
-    margin-bottom: 0.8rem;
-    letter-spacing: -0.5px;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.2px;
     line-height: 1.2;
-    
-    /* Color amarillo dorado */
     color: var(--name-color);
-    
-    /* Sombras negras bien definidas */
     text-shadow: 
-        2px 2px 0 #000000,
+        1px 1px 0 #000000,
         -1px -1px 0 #000000,
         1px -1px 0 #000000,
         -1px 1px 0 #000000,
-        0 0 10px rgba(0, 0, 0, 0.8),
-        0 0 20px rgba(0, 0, 0, 0.5);
-    
-    /* Animación de entrada */
+        0 0 12px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(255, 215, 0, 0.04);
     animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    word-wrap: break-word;
 }
 
 /* ============================================================
-   ESTILOS PARA LA DESCRIPCIÓN
+   DESCRIPCIÓN
    ============================================================ */
 .profile-description {
     font-size: var(--description-font-size);
     font-weight: var(--description-font-weight);
-    margin-bottom: 2.2rem;
-    line-height: 1.7;
-    opacity: 1;
-    color: #ffffff;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    color: #e8e8e8;
     text-shadow: var(--text-shadow-medium);
-    letter-spacing: 0.3px;
-    
-    /* Animación de entrada */
+    letter-spacing: 0.15px;
     animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+    word-wrap: break-word;
 }
 
 /* ============================================================
-   ESTILOS PARA LOS BOTONES MEJORADOS
+   BOTONES
    ============================================================ */
 .social-links {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.6rem;
     width: 100%;
 }
 
@@ -224,13 +456,12 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
     position: relative;
     overflow: hidden;
     
-    /* Botones con fondo semi-transparente */
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text-color);
     text-decoration: none;
     font-size: var(--button-font-size);
@@ -239,43 +470,35 @@ body::before {
     border-radius: var(--border-radius);
     border: var(--button-border);
     box-shadow: var(--button-shadow);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: buttonIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
     
-    /* Animación de entrada */
-    animation: buttonIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    min-height: 36px;
 }
 
-/* Delays para animación escalonada */
-.social-button:nth-child(1) { animation-delay: 0.9s; }
-.social-button:nth-child(2) { animation-delay: 1.1s; }
-.social-button:nth-child(3) { animation-delay: 1.3s; }
-.social-button:nth-child(4) { animation-delay: 1.5s; }
-.social-button:nth-child(5) { animation-delay: 1.7s; }
-.social-button:nth-child(6) { animation-delay: 1.9s; }
-.social-button:nth-child(7) { animation-delay: 2.1s; }
-.social-button:nth-child(8) { animation-delay: 2.3s; }
+.social-button:nth-child(1) { animation-delay: 0.8s; }
+.social-button:nth-child(2) { animation-delay: 0.9s; }
+.social-button:nth-child(3) { animation-delay: 1.0s; }
+.social-button:nth-child(4) { animation-delay: 1.1s; }
+.social-button:nth-child(5) { animation-delay: 1.2s; }
 
-/* Efecto hover mejorado */
 @media (hover: hover) {
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.14);
         border: var(--button-hover-border);
-        transform: translateY(-3px) scale(1.02);
+        transform: translateY(-1.5px) scale(1.01);
         box-shadow: var(--button-hover-shadow);
     }
 }
 
-/* Efecto al presionar */
 .social-button:active {
     transform: scale(0.95);
-    transition-duration: 0.15s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition-duration: 0.1s;
 }
 
-/* Efecto de brillo sutil */
 .social-button::before {
     content: '';
     position: absolute;
@@ -283,7 +506,7 @@ body::before {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.06), transparent);
     transition: left 0.5s ease;
 }
 
@@ -291,48 +514,43 @@ body::before {
     left: 100%;
 }
 
-/* Iconos con animación */
 .social-button i {
-    font-size: 1.5em;
-    width: 35px;
-    height: 35px;
+    font-size: 1.1em;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    text-align: center;
-    
-    /* Sombra simple */
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
-    
-    /* Transición suave */
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* Animación del icono al hover */
 .social-button:hover i {
-    transform: scale(1.2) rotate(5deg);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    transform: scale(1.12);
+    filter: drop-shadow(0 3px 6px rgba(255, 215, 0, 0.15));
 }
 
-/* Texto del botón */
 .social-button span {
     flex: 1;
     text-align: center;
-    margin-right: 35px;
+    margin-right: 24px;
     text-shadow: var(--text-shadow-light);
-    letter-spacing: 0.5px;
-    font-weight: 700;
+    letter-spacing: 0.3px;
+    font-weight: 600;
     color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ============================================================
-   ANIMACIONES MEJORADAS
+   ANIMACIONES
    ============================================================ */
 @keyframes containerIn {
     from {
         opacity: 0;
-        transform: translateY(40px) scale(0.95);
+        transform: translateY(25px) scale(0.95);
     }
     to {
         opacity: 1;
@@ -343,7 +561,7 @@ body::before {
 @keyframes logoIn {
     from {
         opacity: 0;
-        transform: scale(0.5) rotate(-10deg);
+        transform: scale(0.3) rotate(-12deg);
     }
     to {
         opacity: 1;
@@ -354,7 +572,7 @@ body::before {
 @keyframes textIn {
     from {
         opacity: 0;
-        transform: translateY(25px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
@@ -365,7 +583,7 @@ body::before {
 @keyframes buttonIn {
     from {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateX(-12px);
     }
     to {
         opacity: 1;
@@ -373,165 +591,241 @@ body::before {
     }
 }
 
+@keyframes goldShine {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes goldGlow {
+    0%, 100% {
+        opacity: 0.2;
+        transform: rotate(0deg);
+    }
+    50% {
+        opacity: 0.6;
+        transform: rotate(180deg);
+    }
+}
+
 /* ============================================================
-   MEDIA QUERIES OPTIMIZADAS PARA MÓVIL
+   RESPONSIVE - TODOS LOS DISPOSITIVOS
    ============================================================ */
 
-/* Para pantallas muy pequeñas (320px) */
+/* Pantallas muy pequeñas (≤ 360px) */
 @media (max-width: 360px) {
     :root {
-        --logo-size: 100px;
-        --name-font-size: 2.2rem;
-        --description-font-size: 0.95rem;
-        --button-font-size: 1rem;
-        --button-padding: 14px 18px;
+        --logo-size: 65px;
+        --name-font-size: 1.2rem;
+        --description-font-size: 0.6rem;
+        --button-font-size: 0.65rem;
+        --button-padding: 8px 10px;
+        --container-padding: 1rem 0.8rem;
+        --container-margin: 6px;
+        --glass-radius: 14px;
         --container-max-width: 100%;
-        --glass-radius: 25px;
-        --glass-border: 2px solid rgba(255, 255, 255, 0.4);
-        --button-border: 2px solid rgba(255, 255, 255, 0.5);
-    }
-    
-    .main-container {
-        padding: 1.8rem 1.2rem;
-        margin: 12px;
     }
     
     .social-button {
-        gap: 10px;
-        border-radius: 16px;
+        min-height: 32px;
+        gap: 8px;
     }
     
     .social-button i {
-        width: 30px;
-        height: 30px;
-        font-size: 1.3em;
+        width: 18px;
+        height: 18px;
+        font-size: 0.9em;
     }
     
     .social-button span {
-        margin-right: 30px;
-        font-size: 0.95rem;
-    }
-    
-    .profile-name {
-        letter-spacing: -0.3px;
-    }
-}
-
-/* Para pantallas medianas (375px y 414px) */
-@media (min-width: 361px) and (max-width: 480px) {
-    :root {
-        --logo-size: 130px;
-        --container-max-width: 100%;
-        --glass-radius: 28px;
-        --glass-border: 3px solid rgba(255, 255, 255, 0.35);
-        --button-border: 2px solid rgba(255, 255, 255, 0.45);
-    }
-    
-    .main-container {
-        padding: 2rem 1.5rem;
-        margin: 15px;
-    }
-    
-    .social-button {
-        padding: 15px 22px;
-    }
-}
-
-/* Para pantallas grandes de móvil (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    :root {
-        --logo-size: 150px;
-        --name-font-size: 2.8rem;
-        --description-font-size: 1.15rem;
-        --button-font-size: 1.15rem;
-    }
-    
-    .main-container {
-        padding: 2.5rem 2rem;
-        margin: 20px;
-    }
-}
-
-/* Para tablets */
-@media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-        --logo-size: 160px;
-        --name-font-size: 3rem;
-        --description-font-size: 1.2rem;
-        --button-font-size: 1.2rem;
-    }
-    
-    .main-container {
-        padding: 3rem 2.5rem;
-    }
-}
-
-/* Para computadoras de escritorio */
-@media (min-width: 1025px) {
-    :root {
-        --logo-size: 150px;
-        --name-font-size: 3rem;
-        --description-font-size: 1.2rem;
-        --button-font-size: 1.15rem;
-    }
-    
-    .main-container {
-        padding: 3rem 2.5rem;
-        max-width: 500px;
+        margin-right: 18px;
+        font-size: 0.6rem;
     }
     
     .social-links {
-        gap: 1.1rem;
+        gap: 0.5rem;
     }
 }
 
-/* Para pantallas ultra anchas */
-@media (min-width: 1440px) {
+/* Móviles estándar (361px - 480px) */
+@media (min-width: 361px) and (max-width: 480px) {
     :root {
-        --logo-size: 170px;
-        --name-font-size: 3.2rem;
-        --description-font-size: 1.25rem;
-        --button-font-size: 1.2rem;
+        --logo-size: 75px;
+        --name-font-size: 1.4rem;
+        --description-font-size: 0.65rem;
+        --button-font-size: 0.7rem;
+        --button-padding: 9px 12px;
+        --container-padding: 1.2rem 1rem;
+        --container-margin: 8px;
+        --glass-radius: 16px;
+        --container-max-width: 100%;
     }
     
-    .main-container {
-        padding: 3.5rem 3rem;
-        max-width: 550px;
+    .social-button {
+        min-height: 36px;
+    }
+    
+    .social-button i {
+        width: 20px;
+        height: 20px;
+        font-size: 1em;
+    }
+    
+    .social-button span {
+        margin-right: 20px;
+    }
+    
+    .social-links {
+        gap: 0.55rem;
+    }
+}
+
+/* Móviles grandes y tablets pequeñas (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    :root {
+        --logo-size: 80px;
+        --name-font-size: 1.5rem;
+        --description-font-size: 0.68rem;
+        --button-font-size: 0.72rem;
+        --button-padding: 10px 13px;
+        --container-padding: 1.3rem 1.1rem;
+        --container-max-width: 300px;
+        --glass-radius: 18px;
+    }
+    
+    .social-button {
+        min-height: 38px;
+    }
+}
+
+/* Tablets (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --logo-size: 85px;
+        --name-font-size: 1.6rem;
+        --description-font-size: 0.7rem;
+        --button-font-size: 0.75rem;
+        --container-padding: 1.4rem 1.2rem;
+        --container-max-width: 320px;
+        --glass-radius: 20px;
+    }
+    
+    .social-button {
+        min-height: 40px;
+    }
+}
+
+/* Escritorio (1025px - 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    :root {
+        --logo-size: 90px;
+        --name-font-size: 1.7rem;
+        --description-font-size: 0.75rem;
+        --button-font-size: 0.8rem;
+        --container-padding: 1.5rem 1.3rem;
+        --container-max-width: 340px;
+        --glass-radius: 22px;
+    }
+    
+    .social-button {
+        min-height: 42px;
+    }
+    
+    .social-links {
+        gap: 0.65rem;
+    }
+}
+
+/* Pantallas grandes y TV (> 1440px) */
+@media (min-width: 1441px) {
+    :root {
+        --logo-size: 100px;
+        --name-font-size: 1.9rem;
+        --description-font-size: 0.8rem;
+        --button-font-size: 0.85rem;
+        --container-padding: 1.8rem 1.5rem;
+        --container-max-width: 380px;
+        --container-margin: 20px;
+        --glass-radius: 24px;
+        --button-padding: 12px 16px;
+    }
+    
+    .social-button {
+        min-height: 46px;
+        gap: 12px;
+    }
+    
+    .social-button i {
+        width: 28px;
+        height: 28px;
+        font-size: 1.2em;
+    }
+    
+    .social-button span {
+        margin-right: 28px;
+    }
+    
+    .social-links {
+        gap: 0.7rem;
+    }
+}
+
+/* Pantallas muy altas */
+@media (max-aspect-ratio: 9/16) {
+    :root {
+        --logo-size: 70px;
+        --name-font-size: 1.3rem;
+        --description-font-size: 0.6rem;
+        --container-padding: 1rem 0.9rem;
+        --container-margin: 8px;
+    }
+    
+    .social-button {
+        min-height: 34px;
+        padding: 8px 12px;
+    }
+    
+    .social-button i {
+        width: 18px;
+        height: 18px;
+        font-size: 0.9em;
+    }
+    
+    .social-links {
+        gap: 0.5rem;
     }
 }
 
 /* ============================================================
-   OPTIMIZACIONES PARA DISPOSITIVOS TÁCTILES
+   DISPOSITIVOS TÁCTILES
    ============================================================ */
 @media (hover: none) and (pointer: coarse) {
-    /* Botones más grandes para mejor interacción táctil */
     .social-button {
-        min-height: 56px;
-        padding: 16px 20px;
+        min-height: 40px;
     }
     
-    /* Eliminar hover effects en móvil */
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
         border: var(--button-border);
         transform: none;
         box-shadow: var(--button-shadow);
     }
     
-    /* Efecto táctil más suave */
     .social-button:active {
         transform: scale(0.95);
-        background: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.12);
     }
     
-    /* Prevenir zoom en inputs */
     input, textarea, select {
         font-size: 16px;
     }
 }
 
 /* ============================================================
-   ACCESIBILIDAD Y PREFERENCIAS DEL SISTEMA
+   ACCESIBILIDAD
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -543,12 +837,11 @@ body::before {
     }
 }
 
-/* Mejorar contraste para accesibilidad */
 @media (prefers-contrast: high) {
     :root {
+        --glass-border: 2.5px solid rgba(255, 215, 0, 0.4);
+        --button-border: 2.5px solid rgba(255, 215, 0, 0.5);
         --text-shadow-strong: 2px 2px 0 #000000;
-        --button-bg-color: rgba(0, 0, 0, 0.7);
-        --button-border: 3px solid rgba(255, 255, 255, 0.7);
-        --glass-border: 3px solid rgba(255, 255, 255, 0.5);
+        --button-hover-border: 2.5px solid rgba(255, 215, 0, 0.8);
     }
 }
