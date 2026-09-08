@@ -6,7 +6,7 @@
        🎯 CONTROL DE OPACIDAD
        ========================================================== */
     --container-opacity: 0.50;
-    --overlay-opacity: 0.08;
+    --overlay-opacity: 0.10;
     
     /* ==========================================================
        🎨 COLORES Y ESTILOS DEL LOGO
@@ -16,7 +16,7 @@
     --logo-glow-color: rgba(255, 215, 0, 0.15);
     --logo-bg-color: rgba(0, 0, 0, 0.85);
     
-    /* Colores principales - TEMA FUTURISTA */
+    /* Colores principales */
     --text-color: #ffffff;
     --name-color: #FFD700;
     --accent-color: #00d4ff;
@@ -36,28 +36,29 @@
     
     /* Tipografía */
     --font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --name-font-size: 1.6rem;
+    --name-font-size: 1.8rem;
     --name-font-weight: 700;
-    --description-font-size: 0.7rem;
+    --description-font-size: 0.85rem;
     --description-font-weight: 400;
-    --button-font-size: 0.75rem;
+    --button-font-size: 0.9rem;
     --button-font-weight: 600;
     
     /* Dimensiones */
-    --logo-size: 85px;
+    --logo-size: 100px;
     --logo-border-width: 3px;
-    --container-max-width: 320px;
-    --button-padding: 10px 14px;
-    --border-radius: 10px;
-    --container-padding: 1.4rem 1.2rem;
-    --container-margin: 12px;
+    --container-max-width: 340px;
+    --container-min-width: 280px;
+    --button-padding: 14px 18px;
+    --border-radius: 12px;
+    --container-padding: 2rem 1.5rem;
+    --container-margin: 16px;
     
     /* Glassmorphism */
     --glass-bg: rgba(0, 0, 0, var(--container-opacity));
     --glass-border: 1.5px solid rgba(255, 215, 0, 0.12);
     --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.03) inset;
     --glass-backdrop: blur(16px) saturate(150%);
-    --glass-radius: 20px;
+    --glass-radius: 22px;
 }
 
 /* ============================================================
@@ -73,6 +74,7 @@
 html {
     height: 100%;
     width: 100%;
+    overflow-y: auto;
 }
 
 body {
@@ -97,14 +99,50 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 /* ============================================================
-   FONDO FUTURISTA PREMIUM - SOLO COMPUTADORAS
+   VIDEO DE FONDO - DEBE ESTAR DETRÁS (z-index: 0)
+   ============================================================ */
+/* El contenedor del video se crea con JavaScript */
+body > div:first-child {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 0 !important; /* <-- CAPA MÁS BAJA */
+    overflow: hidden !important;
+    background-color: #000000 !important;
+}
+
+body > div:first-child video {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+}
+
+/* ============================================================
+   CAPA OSCURA SOBRE EL VIDEO (z-index: 1)
+   ============================================================ */
+/* La capa oscura se crea con JavaScript con z-index: 1 */
+
+/* ============================================================
+   FONDO FUTURISTA PREMIUM - SOLO COMPUTADORAS (z-index: 1)
    ============================================================ */
 @media (min-width: 1025px) {
-    /* Capa principal del fondo */
+    /* Capa principal del fondo con diseño mejorado */
     body::before {
         content: '';
         position: fixed;
@@ -112,13 +150,13 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 0;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
         background: 
             /* Gradientes de neón */
-            radial-gradient(ellipse at 15% 30%, rgba(0, 100, 255, 0.12) 0%, transparent 60%),
-            radial-gradient(ellipse at 85% 70%, rgba(200, 0, 255, 0.10) 0%, transparent 60%),
-            radial-gradient(ellipse at 50% 100%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.04) 0%, transparent 40%),
+            radial-gradient(ellipse at 15% 30%, rgba(0, 100, 255, 0.15) 0%, transparent 60%),
+            radial-gradient(ellipse at 85% 70%, rgba(200, 0, 255, 0.12) 0%, transparent 60%),
+            radial-gradient(ellipse at 50% 100%, rgba(0, 212, 255, 0.10) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.06) 0%, transparent 40%),
             #0a0a0a;
         pointer-events: none;
     }
@@ -131,23 +169,23 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 0;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
         background-image: 
             /* Líneas horizontales */
             repeating-linear-gradient(
                 0deg,
                 transparent,
                 transparent 35px,
-                rgba(0, 212, 255, 0.03) 35px,
-                rgba(0, 212, 255, 0.03) 36px
+                rgba(0, 212, 255, 0.04) 35px,
+                rgba(0, 212, 255, 0.04) 36px
             ),
             /* Líneas verticales */
             repeating-linear-gradient(
                 90deg,
                 transparent,
                 transparent 45px,
-                rgba(0, 212, 255, 0.02) 45px,
-                rgba(0, 212, 255, 0.02) 46px
+                rgba(0, 212, 255, 0.03) 45px,
+                rgba(0, 212, 255, 0.03) 46px
             );
         animation: gridScroll 30s linear infinite;
         pointer-events: none;
@@ -155,7 +193,7 @@ body {
 }
 
 /* ============================================================
-   ELEMENTOS DECORATIVOS FUTURISTAS
+   ELEMENTOS DECORATIVOS FUTURISTAS - SOLO PC (z-index: 1)
    ============================================================ */
 @media (min-width: 1025px) {
     /* Partículas flotantes */
@@ -165,7 +203,7 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 0;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
         pointer-events: none;
         overflow: hidden;
     }
@@ -196,12 +234,12 @@ body {
     .particle:nth-child(14) { --duration: 14s; top: 65%; left: 15%; animation-delay: 0.6s; width: 4px; height: 4px; }
     .particle:nth-child(15) { --duration: 8s; top: 85%; left: 45%; animation-delay: 2.8s; }
     
-    /* Círculos de neón decorativos */
+    /* Anillos de neón decorativos */
     .neon-ring {
         position: fixed;
         border-radius: 50%;
         border: 1px solid rgba(0, 212, 255, 0.06);
-        z-index: 0;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
         pointer-events: none;
         animation: neonPulse 8s ease-in-out infinite;
     }
@@ -233,6 +271,69 @@ body {
         border-color: rgba(200, 0, 255, 0.03);
         animation-delay: 4s;
     }
+    
+    /* Círculos de neón grandes */
+    .neon-background-circle {
+        position: fixed;
+        border-radius: 50%;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
+        pointer-events: none;
+        border: 1px solid rgba(0, 212, 255, 0.05);
+        animation: neonPulse 8s ease-in-out infinite;
+        width: 500px;
+        height: 500px;
+        top: -150px;
+        right: -150px;
+        border-width: 2px;
+    }
+    
+    .neon-background-circle-2 {
+        position: fixed;
+        border-radius: 50%;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
+        pointer-events: none;
+        border: 1px solid rgba(255, 215, 0, 0.04);
+        animation: neonPulse 10s ease-in-out infinite 2s;
+        width: 350px;
+        height: 350px;
+        bottom: -100px;
+        left: -100px;
+        border-width: 2px;
+    }
+    
+    .neon-background-circle-3 {
+        position: fixed;
+        border-radius: 50%;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
+        pointer-events: none;
+        border: 1px solid rgba(200, 0, 255, 0.03);
+        animation: neonPulse 12s ease-in-out infinite 4s;
+        width: 600px;
+        height: 600px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    /* Texto de código decorativo */
+    .code-text {
+        position: fixed;
+        z-index: 1; /* <-- ENCIMA DEL VIDEO */
+        pointer-events: none;
+        font-family: 'Courier New', monospace;
+        color: rgba(0, 212, 255, 0.04);
+        font-size: 13px;
+        line-height: 1.8;
+        letter-spacing: 2px;
+        white-space: pre;
+        animation: codeFloat 20s linear infinite;
+        opacity: 0.5;
+    }
+    
+    .code-text:nth-child(19) { top: 8%; left: 3%; animation-delay: 0s; }
+    .code-text:nth-child(20) { top: 25%; right: 5%; animation-delay: -5s; }
+    .code-text:nth-child(21) { bottom: 15%; left: 5%; animation-delay: -10s; }
+    .code-text:nth-child(22) { bottom: 35%; right: 3%; animation-delay: -15s; }
 }
 
 /* ============================================================
@@ -273,47 +374,42 @@ body {
     }
     25% {
         opacity: 0.8;
-        transform: scale(1.02) rotate(5deg);
+        transform: scale(1.02) rotate(3deg);
     }
     50% {
         opacity: 0.2;
-        transform: scale(0.98) rotate(-3deg);
+        transform: scale(0.98) rotate(-2deg);
     }
     75% {
         opacity: 0.6;
-        transform: scale(1.01) rotate(3deg);
+        transform: scale(1.01) rotate(2deg);
+    }
+}
+
+@keyframes codeFloat {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-25px) rotate(1deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
     }
 }
 
 /* ============================================================
-   CAPA OSCURA EXTERIOR - SOLO MÓVILES/TABLETS
-   ============================================================ */
-@media (max-width: 1024px) {
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, 
-            rgba(0,0,0, calc(var(--overlay-opacity) * 0.7)) 0%, 
-            rgba(0,0,0, var(--overlay-opacity)) 50%, 
-            rgba(0,0,0, calc(var(--overlay-opacity) * 1.3)) 100%
-        );
-        z-index: 1;
-        pointer-events: none;
-    }
-}
-
-/* ============================================================
-   CONTENEDOR PRINCIPAL
+   CONTENEDOR PRINCIPAL - DEBE ESTAR ENCIMA (z-index: 2)
    ============================================================ */
 .main-container {
     position: relative;
-    z-index: 2;
+    z-index: 2; /* <-- CAPA MÁS ALTA, ENCIMA DEL VIDEO Y DECORACIONES */
     width: 100%;
     max-width: var(--container-max-width);
+    min-width: var(--container-min-width);
     margin: var(--container-margin);
     padding: var(--container-padding);
     text-align: center;
@@ -326,23 +422,14 @@ body {
     box-shadow: var(--glass-shadow);
     
     animation: containerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    
-    max-height: 90vh;
-    max-height: 90dvh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.main-container::-webkit-scrollbar {
-    display: none;
+    overflow: visible;
 }
 
 /* ============================================================
    LOGO
    ============================================================ */
 .profile-logo {
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.2rem;
     width: var(--logo-size);
     height: var(--logo-size);
     display: flex;
@@ -352,29 +439,29 @@ body {
     flex-shrink: 0;
     
     border-radius: 50%;
-    padding: 4px;
+    padding: 5px;
     background: linear-gradient(135deg, #FFD700, #F4A900, #FFD700, #DAA520);
     background-size: 300% 300%;
     animation: goldShine 4s ease-in-out infinite;
     box-shadow: 
-        0 0 20px var(--logo-shadow-color),
-        0 0 40px var(--logo-glow-color),
+        0 0 25px var(--logo-shadow-color),
+        0 0 50px var(--logo-glow-color),
         inset 0 0 15px rgba(255, 215, 0, 0.08);
 }
 
 .profile-logo::before {
     content: '';
     position: absolute;
-    inset: 4px;
+    inset: 5px;
     border-radius: 50%;
     background: var(--logo-bg-color);
     z-index: 0;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
 }
 
 .profile-logo img {
-    width: calc(100% - 12px);
-    height: calc(100% - 12px);
+    width: calc(100% - 14px);
+    height: calc(100% - 14px);
     object-fit: contain;
     display: block;
     position: relative;
@@ -411,17 +498,17 @@ body {
 .profile-name {
     font-size: var(--name-font-size);
     font-weight: var(--name-font-weight);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     letter-spacing: -0.2px;
-    line-height: 1.2;
+    line-height: 1.3;
     color: var(--name-color);
     text-shadow: 
         1px 1px 0 #000000,
         -1px -1px 0 #000000,
         1px -1px 0 #000000,
         -1px 1px 0 #000000,
-        0 0 12px rgba(0, 0, 0, 0.8),
-        0 0 25px rgba(255, 215, 0, 0.04);
+        0 0 15px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(255, 215, 0, 0.04);
     animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
     word-wrap: break-word;
 }
@@ -432,8 +519,8 @@ body {
 .profile-description {
     font-size: var(--description-font-size);
     font-weight: var(--description-font-weight);
-    margin-bottom: 1.2rem;
-    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
     opacity: 0.9;
     color: #e8e8e8;
     text-shadow: var(--text-shadow-medium);
@@ -448,7 +535,7 @@ body {
 .social-links {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.75rem;
     width: 100%;
 }
 
@@ -456,12 +543,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
     position: relative;
     overflow: hidden;
     
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.07);
     color: var(--text-color);
     text-decoration: none;
     font-size: var(--button-font-size);
@@ -475,8 +562,7 @@ body {
     
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     animation: buttonIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    
-    min-height: 36px;
+    min-height: 48px;
 }
 
 .social-button:nth-child(1) { animation-delay: 0.8s; }
@@ -487,15 +573,15 @@ body {
 
 @media (hover: hover) {
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.15);
         border: var(--button-hover-border);
-        transform: translateY(-1.5px) scale(1.01);
+        transform: translateY(-2px) scale(1.01);
         box-shadow: var(--button-hover-shadow);
     }
 }
 
 .social-button:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
     transition-duration: 0.1s;
 }
 
@@ -515,9 +601,9 @@ body {
 }
 
 .social-button i {
-    font-size: 1.1em;
-    width: 24px;
-    height: 24px;
+    font-size: 1.2em;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -534,7 +620,7 @@ body {
 .social-button span {
     flex: 1;
     text-align: center;
-    margin-right: 24px;
+    margin-right: 28px;
     text-shadow: var(--text-shadow-light);
     letter-spacing: 0.3px;
     font-weight: 600;
@@ -545,12 +631,12 @@ body {
 }
 
 /* ============================================================
-   ANIMACIONES
+   ANIMACIONES PRINCIPALES
    ============================================================ */
 @keyframes containerIn {
     from {
         opacity: 0;
-        transform: translateY(25px) scale(0.95);
+        transform: translateY(30px) scale(0.95);
     }
     to {
         opacity: 1;
@@ -572,7 +658,7 @@ body {
 @keyframes textIn {
     from {
         opacity: 0;
-        transform: translateY(15px);
+        transform: translateY(18px);
     }
     to {
         opacity: 1;
@@ -618,120 +704,66 @@ body {
 /* Pantallas muy pequeñas (≤ 360px) */
 @media (max-width: 360px) {
     :root {
-        --logo-size: 65px;
-        --name-font-size: 1.2rem;
-        --description-font-size: 0.6rem;
-        --button-font-size: 0.65rem;
-        --button-padding: 8px 10px;
-        --container-padding: 1rem 0.8rem;
-        --container-margin: 6px;
-        --glass-radius: 14px;
+        --logo-size: 75px;
+        --name-font-size: 1.3rem;
+        --description-font-size: 0.7rem;
+        --button-font-size: 0.75rem;
+        --button-padding: 12px 14px;
+        --container-padding: 1.4rem 1rem;
+        --container-margin: 10px;
+        --glass-radius: 16px;
         --container-max-width: 100%;
+        --container-min-width: 100%;
     }
     
     .social-button {
-        min-height: 32px;
-        gap: 8px;
+        min-height: 40px;
+        gap: 10px;
     }
     
     .social-button i {
-        width: 18px;
-        height: 18px;
-        font-size: 0.9em;
+        width: 22px;
+        height: 22px;
+        font-size: 1em;
     }
     
     .social-button span {
-        margin-right: 18px;
-        font-size: 0.6rem;
+        margin-right: 22px;
+        font-size: 0.7rem;
     }
     
     .social-links {
-        gap: 0.5rem;
+        gap: 0.6rem;
     }
 }
 
 /* Móviles estándar (361px - 480px) */
 @media (min-width: 361px) and (max-width: 480px) {
     :root {
-        --logo-size: 75px;
-        --name-font-size: 1.4rem;
-        --description-font-size: 0.65rem;
-        --button-font-size: 0.7rem;
-        --button-padding: 9px 12px;
-        --container-padding: 1.2rem 1rem;
-        --container-margin: 8px;
-        --glass-radius: 16px;
+        --logo-size: 85px;
+        --name-font-size: 1.5rem;
+        --description-font-size: 0.75rem;
+        --button-font-size: 0.8rem;
+        --button-padding: 13px 16px;
+        --container-padding: 1.6rem 1.2rem;
+        --container-margin: 12px;
+        --glass-radius: 18px;
         --container-max-width: 100%;
+        --container-min-width: 100%;
     }
     
     .social-button {
-        min-height: 36px;
+        min-height: 44px;
     }
     
     .social-button i {
-        width: 20px;
-        height: 20px;
-        font-size: 1em;
+        width: 24px;
+        height: 24px;
+        font-size: 1.05em;
     }
     
     .social-button span {
-        margin-right: 20px;
-    }
-    
-    .social-links {
-        gap: 0.55rem;
-    }
-}
-
-/* Móviles grandes y tablets pequeñas (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    :root {
-        --logo-size: 80px;
-        --name-font-size: 1.5rem;
-        --description-font-size: 0.68rem;
-        --button-font-size: 0.72rem;
-        --button-padding: 10px 13px;
-        --container-padding: 1.3rem 1.1rem;
-        --container-max-width: 300px;
-        --glass-radius: 18px;
-    }
-    
-    .social-button {
-        min-height: 38px;
-    }
-}
-
-/* Tablets (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-        --logo-size: 85px;
-        --name-font-size: 1.6rem;
-        --description-font-size: 0.7rem;
-        --button-font-size: 0.75rem;
-        --container-padding: 1.4rem 1.2rem;
-        --container-max-width: 320px;
-        --glass-radius: 20px;
-    }
-    
-    .social-button {
-        min-height: 40px;
-    }
-}
-
-/* Escritorio (1025px - 1440px) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    :root {
-        --logo-size: 90px;
-        --name-font-size: 1.7rem;
-        --description-font-size: 0.75rem;
-        --button-font-size: 0.8rem;
-        --container-padding: 1.5rem 1.3rem;
-        --container-max-width: 340px;
-        --glass-radius: 22px;
-    }
-    
-    .social-button {
-        min-height: 42px;
+        margin-right: 24px;
     }
     
     .social-links {
@@ -739,63 +771,97 @@ body {
     }
 }
 
-/* Pantallas grandes y TV (> 1440px) */
-@media (min-width: 1441px) {
+/* Móviles grandes (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
     :root {
-        --logo-size: 100px;
-        --name-font-size: 1.9rem;
+        --logo-size: 95px;
+        --name-font-size: 1.6rem;
         --description-font-size: 0.8rem;
         --button-font-size: 0.85rem;
-        --container-padding: 1.8rem 1.5rem;
-        --container-max-width: 380px;
-        --container-margin: 20px;
-        --glass-radius: 24px;
-        --button-padding: 12px 16px;
+        --button-padding: 14px 17px;
+        --container-padding: 1.8rem 1.4rem;
+        --container-max-width: 340px;
+        --container-min-width: 290px;
+        --glass-radius: 20px;
     }
     
     .social-button {
         min-height: 46px;
-        gap: 12px;
-    }
-    
-    .social-button i {
-        width: 28px;
-        height: 28px;
-        font-size: 1.2em;
-    }
-    
-    .social-button span {
-        margin-right: 28px;
-    }
-    
-    .social-links {
-        gap: 0.7rem;
     }
 }
 
-/* Pantallas muy altas */
-@media (max-aspect-ratio: 9/16) {
+/* Tablets (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
     :root {
-        --logo-size: 70px;
-        --name-font-size: 1.3rem;
-        --description-font-size: 0.6rem;
-        --container-padding: 1rem 0.9rem;
-        --container-margin: 8px;
+        --logo-size: 105px;
+        --name-font-size: 1.8rem;
+        --description-font-size: 0.85rem;
+        --button-font-size: 0.9rem;
+        --container-padding: 2rem 1.5rem;
+        --container-max-width: 380px;
+        --container-min-width: 320px;
+        --glass-radius: 22px;
     }
     
     .social-button {
-        min-height: 34px;
-        padding: 8px 12px;
+        min-height: 50px;
+    }
+}
+
+/* Escritorio (1025px - 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    :root {
+        --logo-size: 110px;
+        --name-font-size: 1.9rem;
+        --description-font-size: 0.9rem;
+        --button-font-size: 0.95rem;
+        --container-padding: 2.2rem 1.8rem;
+        --container-max-width: 400px;
+        --container-min-width: 340px;
+        --glass-radius: 24px;
     }
     
-    .social-button i {
-        width: 18px;
-        height: 18px;
-        font-size: 0.9em;
+    .social-button {
+        min-height: 52px;
     }
     
     .social-links {
-        gap: 0.5rem;
+        gap: 0.8rem;
+    }
+}
+
+/* Pantallas grandes y TV (> 1440px) */
+@media (min-width: 1441px) {
+    :root {
+        --logo-size: 120px;
+        --name-font-size: 2.2rem;
+        --description-font-size: 1rem;
+        --button-font-size: 1rem;
+        --container-padding: 2.5rem 2rem;
+        --container-max-width: 440px;
+        --container-min-width: 380px;
+        --container-margin: 24px;
+        --glass-radius: 26px;
+        --button-padding: 16px 22px;
+    }
+    
+    .social-button {
+        min-height: 56px;
+        gap: 14px;
+    }
+    
+    .social-button i {
+        width: 32px;
+        height: 32px;
+        font-size: 1.3em;
+    }
+    
+    .social-button span {
+        margin-right: 32px;
+    }
+    
+    .social-links {
+        gap: 0.85rem;
     }
 }
 
@@ -804,11 +870,11 @@ body {
    ============================================================ */
 @media (hover: none) and (pointer: coarse) {
     .social-button {
-        min-height: 40px;
+        min-height: 48px;
     }
     
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.07);
         border: var(--button-border);
         transform: none;
         box-shadow: var(--button-shadow);
@@ -816,7 +882,7 @@ body {
     
     .social-button:active {
         transform: scale(0.95);
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.14);
     }
     
     input, textarea, select {

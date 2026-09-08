@@ -2,18 +2,25 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=yes">
     <title>Link in Bio - Xolo Tech</title>
     
     <!-- Font Awesome para iconos de redes sociales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Fuentes Google - Poppins para mejor tipografía -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="styless.css">
 </head>
 <body>
 
-    <!-- Contenedor principal centrado -->
+    <!-- ============================================================
+         CONTENEDOR PRINCIPAL CENTRADO
+         ============================================================ -->
     <main class="main-container">
         
         <!-- LOGO: Imagen de perfil circular -->
@@ -37,7 +44,12 @@
         </div>
 
     </main>
-    <!-- Elementos decorativos futuristas (solo visibles en computadora) -->
+
+    <!-- ============================================================
+         ELEMENTOS DECORATIVOS FUTURISTAS (SOLO VISIBLES EN PC)
+         ============================================================ -->
+    
+    <!-- Partículas flotantes -->
     <div class="particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -55,10 +67,61 @@
         <div class="particle"></div>
         <div class="particle"></div>
     </div>
+    
+    <!-- Anillos de neón decorativos -->
     <div class="neon-ring"></div>
     <div class="neon-ring"></div>
     <div class="neon-ring"></div>
+    
+    <!-- Círculos de neón grandes (versión mejorada) -->
+    <div class="neon-background-circle"></div>
+    <div class="neon-background-circle-2"></div>
+    <div class="neon-background-circle-3"></div>
+
+    <!-- Texto de código flotante decorativo -->
+    <div class="code-text">
+        &lt;?php echo "XoloTech"; ?&gt;
+    </div>
+    <div class="code-text">
+        const future = new Technology();
+    </div>
+    <div class="code-text">
+        function innovate() { return "2026"; }
+    </div>
+    <div class="code-text">
+        #XoloTech #Innovación #Tecnología
+    </div>
+
+    <!-- ============================================================
+         SCRIPTS
+         ============================================================ -->
     <!-- JavaScript para la configuración y la lógica -->
     <script src="script.js"></script>
+    
+    <!-- Script para detectar si el usuario está en PC y activar efectos -->
+    <script>
+        (function() {
+            // Detectar si es computadora (no táctil y ancho > 1024px)
+            const isPC = window.innerWidth >= 1025 && !('ontouchstart' in window);
+            
+            if (isPC) {
+                document.documentElement.classList.add('is-pc');
+                console.log('💻 Modo PC activado - Efectos futuristas');
+            } else {
+                console.log('📱 Modo móvil activado - Optimizado para rendimiento');
+            }
+            
+            // Re-detectar en resize
+            window.addEventListener('resize', function() {
+                const nowPC = window.innerWidth >= 1025 && !('ontouchstart' in window);
+                if (nowPC) {
+                    document.documentElement.classList.add('is-pc');
+                } else {
+                    document.documentElement.classList.remove('is-pc');
+                }
+            });
+        })();
+    </script>
+    
 </body>
 </html>
