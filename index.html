@@ -98,30 +98,5 @@
     <!-- JavaScript para la configuración y la lógica -->
     <script src="script.js"></script>
     
-    <!-- Script para detectar si el usuario está en PC y activar efectos -->
-    <script>
-        (function() {
-            // Detectar si es computadora (no táctil y ancho > 1024px)
-            const isPC = window.innerWidth >= 1025 && !('ontouchstart' in window);
-            
-            if (isPC) {
-                document.documentElement.classList.add('is-pc');
-                console.log('💻 Modo PC activado - Efectos futuristas');
-            } else {
-                console.log('📱 Modo móvil activado - Optimizado para rendimiento');
-            }
-            
-            // Re-detectar en resize
-            window.addEventListener('resize', function() {
-                const nowPC = window.innerWidth >= 1025 && !('ontouchstart' in window);
-                if (nowPC) {
-                    document.documentElement.classList.add('is-pc');
-                } else {
-                    document.documentElement.classList.remove('is-pc');
-                }
-            });
-        })();
-    </script>
-    
 </body>
 </html>

@@ -16,11 +16,6 @@ const profile = {
     // --- CONFIGURACIÓN DE FONDO ---
     backgroundSettings: {
         overlayOpacity: 0.10, // <-- OPACIDAD DE LA CAPA OSCURA (0-1)
-        position: 'center center',
-        size: 'cover',
-        // Para videos 9:16, estas configuraciones ayudan
-        objectFit: 'cover',      // Cubre toda la pantalla
-        objectPosition: 'center center' // Centrado perfecto
     },
 
     // --- REDES SOCIALES ---
@@ -53,15 +48,46 @@ const profile = {
 };
 
 // ============================================================
-// LÓGICA DE LA PÁGINA - OPTIMIZADA PARA VIDEOS 9:16
+// LÓGICA DE LA PÁGINA
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
+    let videoElement = null;
+    let videoContainer = null;
     
-    // --- VIDEO DE FONDO OPTIMIZADO PARA 9:16 ---
+    // --- FUNCIÓN PARA CENTRAR VIDEO 9:16 ---
+    function centerVideo() {
+        if (!videoElement) return;
+        
+        const containerWidth = window.innerWidth;
+        const containerHeight = window.innerHeight;
+        const videoRatio = videoElement.videoWidth / videoElement.videoHeight;
+        
+        // Si es 9:16 (vertical)
+        if (videoRatio < 0.7) {
+            // El video debe cubrir todo el ancho y ajustar altura
+            videoElement.style.width = '100%';
+            videoElement.style.height = 'auto';
+            videoElement.style.minWidth = '100%';
+            videoElement.style.minHeight = 'auto';
+            videoElement.style.objectFit = 'cover';
+            
+            // Si la altura del contenedor es mayor que la del video, centrar verticalmente
+            const videoHeight = containerWidth / videoRatio;
+            if (videoHeight < containerHeight) {
+                videoElement.style.height = '100%';
+                videoElement.style.width = 'auto';
+                videoElement.style.minHeight = '100%';
+                videoElement.style.minWidth = 'auto';
+            }
+        }
+    }
+    
+    // --- VIDEO DE FONDO ---
     if (profile.backgroundVideo) {
-        // Crear contenedor del video con fondo negro para evitar bordes
-        const videoContainer = document.createElement('div');
+        // Contenedor del video
+        videoContainer = document.createElement('div');
+        videoContainer.className = 'video-background-container';
         videoContainer.style.cssText = `
             position: fixed;
             top: 0;
@@ -71,11 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
             z-index: 0;
             overflow: hidden;
             background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `;
 
-        // Crear elemento video con configuraciones optimizadas
-        const video = document.createElement('video');
-        video.style.cssText = `
+        // Elemento video
+        videoElement = document.createElement('video');
+        videoElement.style.cssText = `
             position: absolute;
             top: 50%;
             left: 50%;
@@ -86,55 +115,38 @@ document.addEventListener('DOMContentLoaded', () => {
             height: auto;
             object-fit: cover;
             object-position: center center;
-            /* Para mejorar la calidad en dispositivos HD */
-            image-rendering: auto;
-            -webkit-transform: translate(-50%, -50%);
-            -moz-transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            -o-transform: translate(-50%, -50%);
         `;
         
-        // Configurar video para máximo rendimiento y calidad
-        video.src = profile.backgroundVideo;
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.webkitPlaysInline = true; // Para iOS
-        video.setAttribute('aria-hidden', 'true');
-        video.setAttribute('preload', 'auto');
+        // Configurar video
+        videoElement.src = profile.backgroundVideo;
+        videoElement.autoplay = true;
+        videoElement.loop = true;
+        videoElement.muted = true;
+        videoElement.playsInline = true;
+        videoElement.webkitPlaysInline = true;
+        videoElement.setAttribute('preload', 'auto');
+        videoElement.setAttribute('playsinline', '');
+        videoElement.setAttribute('webkit-playsinline', '');
         
-        // Para mejorar la reproducción en móviles
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        
-        // Detectar si el video es 9:16 para aplicar optimizaciones
-        video.addEventListener('loadedmetadata', function() {
-            const aspectRatio = this.videoWidth / this.videoHeight;
-            // Si es aproximadamente 9:16 (0.5625) o más vertical
-            if (aspectRatio < 0.7) {
-                // El video es vertical (9:16), asegurar que cubra bien
-                this.style.objectFit = 'cover';
-                this.style.minHeight = '100%';
-                this.style.minWidth = 'auto';
-                this.style.width = 'auto';
-                this.style.height = '100%';
-            }
+        // Cuando el video esté cargado, centrarlo
+        videoElement.addEventListener('loadedmetadata', function() {
+            console.log(`📹 Video cargado - Aspect ratio: ${(this.videoWidth / this.videoHeight).toFixed(2)}`);
+            centerVideo();
         });
         
-        // Agregar video al contenedor
-        videoContainer.appendChild(video);
+        // También centrar cuando cambie el tamaño
+        window.addEventListener('resize', centerVideo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(centerVideo, 300);
+        });
         
-        // Agregar contenedor al body (al principio para estar detrás)
+        videoContainer.appendChild(videoElement);
         document.body.prepend(videoContainer);
         
-        // Asegurar que el body tenga posición relativa para el z-index
-        body.style.position = 'relative';
-        body.style.zIndex = '1';
-        
-        // Agregar capa oscura sobre el video si está configurada
+        // Capa oscura
         if (profile.backgroundSettings && profile.backgroundSettings.overlayOpacity !== undefined) {
             const overlay = document.createElement('div');
+            overlay.className = 'video-overlay';
             overlay.style.cssText = `
                 position: fixed;
                 top: 0;
@@ -144,28 +156,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 background-color: rgba(0, 0, 0, ${profile.backgroundSettings.overlayOpacity});
                 z-index: 1;
                 pointer-events: none;
-                /* Mejorar rendimiento */
-                -webkit-transform: translateZ(0);
-                transform: translateZ(0);
             `;
             document.body.appendChild(overlay);
         }
         
-        // Manejar errores de carga del video (mostrar fondo negro)
-        video.addEventListener('error', function() {
-            console.warn('Error cargando el video de fondo, usando fondo negro');
-            videoContainer.style.backgroundColor = '#0a0a0a';
-        });
-        
-        // Para dispositivos con batería baja, optimizar rendimiento
-        if ('connection' in navigator && navigator.connection) {
-            const connection = navigator.connection;
-            if (connection.saveData || connection.effectiveType === '2g') {
-                video.pause();
+        // Manejar errores
+        videoElement.addEventListener('error', function() {
+            console.warn('⚠️ Error cargando el video de fondo');
+            if (videoContainer) {
                 videoContainer.style.backgroundColor = '#0a0a0a';
             }
+        });
+    }
+    
+    // --- FUNCIÓN PARA REANUDAR VIDEO ---
+    function forceVideoPlay() {
+        if (videoElement && videoElement.paused) {
+            videoElement.play().catch(() => {});
         }
     }
+    
+    // --- EVENTOS PARA REANUDAR VIDEO ---
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            setTimeout(forceVideoPlay, 100);
+            setTimeout(forceVideoPlay, 300);
+        }
+    });
+    
+    document.addEventListener('click', forceVideoPlay);
+    document.addEventListener('touchstart', forceVideoPlay, { passive: true });
+    window.addEventListener('focus', () => setTimeout(forceVideoPlay, 200));
+    
+    // Verificar cada 5 segundos
+    setInterval(() => {
+        if (videoElement && videoElement.paused && !document.hidden) {
+            forceVideoPlay();
+        }
+    }, 5000);
     
     // --- CARGAR LOGO ---
     const logoContainer = document.getElementById('profile-logo');
@@ -185,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         descriptionElement.textContent = profile.description;
     }
 
-    // --- GENERAR BOTONES DE REDES SOCIALES ---
+    // --- GENERAR BOTONES ---
     const socialLinksContainer = document.getElementById('social-links');
     if (socialLinksContainer) {
         socialLinksContainer.innerHTML = '';
@@ -210,52 +238,11 @@ document.addEventListener('DOMContentLoaded', () => {
             linkElement.appendChild(iconElement);
             linkElement.appendChild(spanElement);
             socialLinksContainer.appendChild(linkElement);
+            
+            linkElement.addEventListener('click', forceVideoPlay);
+            linkElement.addEventListener('touchstart', forceVideoPlay, { passive: true });
         });
     }
+    
+    console.log('✅ XoloTech - Perfil cargado correctamente');
 });
-
-// ============================================================
-// OPTIMIZACIONES ADICIONALES PARA VIDEOS 9:16
-// ============================================================
-
-// 1. Escuchar cambios de orientación para reajustar el video
-window.addEventListener('resize', () => {
-    const video = document.querySelector('video');
-    if (video) {
-        // Forzar reflow para que se reajuste
-        video.style.transform = 'translate(-50%, -50%) scale(1)';
-        requestAnimationFrame(() => {
-            video.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
-    }
-});
-
-// 2. Para iOS, asegurar que el video se reproduzca
-document.addEventListener('touchstart', () => {
-    const video = document.querySelector('video');
-    if (video && video.paused) {
-        video.play().catch(() => {});
-    }
-}, { once: true });
-
-// 3. Para Android, asegurar reproducción
-document.addEventListener('click', () => {
-    const video = document.querySelector('video');
-    if (video && video.paused) {
-        video.play().catch(() => {});
-    }
-}, { once: true });
-
-// 4. Si el usuario cambia de pestaña, pausar/reproducir para ahorrar recursos
-document.addEventListener('visibilitychange', () => {
-    const video = document.querySelector('video');
-    if (video) {
-        if (document.hidden) {
-            video.pause();
-        } else {
-            video.play().catch(() => {});
-        }
-    }
-});
-
-console.log('✅ XoloTech - Perfil cargado con video 9:16 optimizado');

@@ -1,68 +1,51 @@
 /* ============================================================
-   VARIABLES GLOBALES - CENTRALIZADAS
+   VARIABLES GLOBALES
    ============================================================ */
 :root {
-    /* ==========================================================
-       🎯 CONTROL DE OPACIDAD
-       ========================================================== */
-    --container-opacity: 0.50;
+    --container-opacity: 0.55;
     --overlay-opacity: 0.10;
     
-    /* ==========================================================
-       🎨 COLORES Y ESTILOS DEL LOGO
-       ========================================================== */
     --logo-border-color: #FFD700;
     --logo-shadow-color: rgba(255, 215, 0, 0.3);
     --logo-glow-color: rgba(255, 215, 0, 0.15);
     --logo-bg-color: rgba(0, 0, 0, 0.85);
     
-    /* Colores principales */
     --text-color: #ffffff;
     --name-color: #FFD700;
-    --accent-color: #00d4ff;
-    --accent-glow: rgba(0, 212, 255, 0.15);
     
-    --text-shadow-strong: 2px 2px 4px rgba(0, 0, 0, 0.9), -1px -1px 3px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
     --text-shadow-medium: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
     --text-shadow-light: 1px 1px 2px rgba(0, 0, 0, 0.7);
     
-    /* Botones */
-    --button-bg-color: rgba(255, 255, 255, 0.06);
-    --button-hover-bg-color: rgba(255, 255, 255, 0.15);
-    --button-border: 1.5px solid rgba(255, 215, 0, 0.25);
-    --button-hover-border: 1.5px solid rgba(255, 215, 0, 0.6);
-    --button-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 215, 0, 0.03) inset;
-    --button-hover-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 215, 0, 0.1) inset;
+    --button-border: 2px solid rgba(255, 215, 0, 0.25);
+    --button-hover-border: 2px solid rgba(255, 215, 0, 0.6);
+    --button-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    --button-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
     
-    /* Tipografía */
-    --font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --name-font-size: 1.8rem;
-    --name-font-weight: 700;
-    --description-font-size: 0.85rem;
+    --font-family: 'Poppins', 'Inter', sans-serif;
+    --name-font-size: 2.2rem;
+    --name-font-weight: 800;
+    --description-font-size: 1rem;
     --description-font-weight: 400;
-    --button-font-size: 0.9rem;
+    --button-font-size: 1rem;
     --button-font-weight: 600;
     
-    /* Dimensiones */
-    --logo-size: 100px;
-    --logo-border-width: 3px;
-    --container-max-width: 340px;
-    --container-min-width: 280px;
-    --button-padding: 14px 18px;
-    --border-radius: 12px;
-    --container-padding: 2rem 1.5rem;
-    --container-margin: 16px;
+    --logo-size: 120px;
+    --container-max-width: 420px;
+    --container-min-width: 300px;
+    --button-padding: 16px 22px;
+    --border-radius: 14px;
+    --container-padding: 2.2rem 1.8rem;
+    --container-margin: 20px;
     
-    /* Glassmorphism */
     --glass-bg: rgba(0, 0, 0, var(--container-opacity));
-    --glass-border: 1.5px solid rgba(255, 215, 0, 0.12);
-    --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.03) inset;
-    --glass-backdrop: blur(16px) saturate(150%);
-    --glass-radius: 22px;
+    --glass-border: 2px solid rgba(255, 215, 0, 0.15);
+    --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    --glass-backdrop: blur(20px) saturate(160%);
+    --glass-radius: 26px;
 }
 
 /* ============================================================
-   RESET BÁSICO
+   RESET
    ============================================================ */
 * {
     margin: 0;
@@ -71,346 +54,80 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-html {
+html, body {
     height: 100%;
     width: 100%;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 body {
-    min-height: 100vh;
-    min-height: 100dvh;
-    width: 100%;
     font-family: var(--font-family);
     color: var(--text-color);
     background-color: #0a0a0a;
-    
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
     min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 /* ============================================================
-   VIDEO DE FONDO - DEBE ESTAR DETRÁS (z-index: 0)
+   VIDEO DE FONDO - 9:16 CENTRADO
    ============================================================ */
-/* El contenedor del video se crea con JavaScript */
-body > div:first-child {
+.video-background-container {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    z-index: 0 !important; /* <-- CAPA MÁS BAJA */
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0 !important;
     overflow: hidden !important;
     background-color: #000000 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
-body > div:first-child video {
+.video-background-container video {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     min-width: 100% !important;
     min-height: 100% !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     object-fit: cover !important;
     object-position: center center !important;
 }
 
 /* ============================================================
-   CAPA OSCURA SOBRE EL VIDEO (z-index: 1)
+   CAPA OSCURA SOBRE EL VIDEO
    ============================================================ */
-/* La capa oscura se crea con JavaScript con z-index: 1 */
-
-/* ============================================================
-   FONDO FUTURISTA PREMIUM - SOLO COMPUTADORAS (z-index: 1)
-   ============================================================ */
-@media (min-width: 1025px) {
-    /* Capa principal del fondo con diseño mejorado */
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        background: 
-            /* Gradientes de neón */
-            radial-gradient(ellipse at 15% 30%, rgba(0, 100, 255, 0.15) 0%, transparent 60%),
-            radial-gradient(ellipse at 85% 70%, rgba(200, 0, 255, 0.12) 0%, transparent 60%),
-            radial-gradient(ellipse at 50% 100%, rgba(0, 212, 255, 0.10) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.06) 0%, transparent 40%),
-            #0a0a0a;
-        pointer-events: none;
-    }
-    
-    /* Líneas de grid tipo código */
-    body::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        background-image: 
-            /* Líneas horizontales */
-            repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 35px,
-                rgba(0, 212, 255, 0.04) 35px,
-                rgba(0, 212, 255, 0.04) 36px
-            ),
-            /* Líneas verticales */
-            repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 45px,
-                rgba(0, 212, 255, 0.03) 45px,
-                rgba(0, 212, 255, 0.03) 46px
-            );
-        animation: gridScroll 30s linear infinite;
-        pointer-events: none;
-    }
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* ============================================================
-   ELEMENTOS DECORATIVOS FUTURISTAS - SOLO PC (z-index: 1)
-   ============================================================ */
-@media (min-width: 1025px) {
-    /* Partículas flotantes */
-    .particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        overflow: hidden;
-    }
-    
-    .particle {
-        position: absolute;
-        width: 3px;
-        height: 3px;
-        background: rgba(0, 212, 255, 0.3);
-        border-radius: 50%;
-        animation: particleFloat var(--duration) ease-in-out infinite;
-        box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
-    }
-    
-    .particle:nth-child(1) { --duration: 8s; top: 10%; left: 5%; animation-delay: 0s; }
-    .particle:nth-child(2) { --duration: 12s; top: 20%; left: 15%; animation-delay: 1s; width: 4px; height: 4px; }
-    .particle:nth-child(3) { --duration: 10s; top: 30%; left: 25%; animation-delay: 2s; }
-    .particle:nth-child(4) { --duration: 14s; top: 40%; left: 35%; animation-delay: 0.5s; width: 2px; height: 2px; }
-    .particle:nth-child(5) { --duration: 9s; top: 50%; left: 45%; animation-delay: 1.5s; }
-    .particle:nth-child(6) { --duration: 11s; top: 60%; left: 55%; animation-delay: 3s; width: 4px; height: 4px; }
-    .particle:nth-child(7) { --duration: 13s; top: 70%; left: 65%; animation-delay: 0.8s; }
-    .particle:nth-child(8) { --duration: 7s; top: 80%; left: 75%; animation-delay: 2.5s; width: 2px; height: 2px; }
-    .particle:nth-child(9) { --duration: 15s; top: 90%; left: 85%; animation-delay: 1.2s; }
-    .particle:nth-child(10) { --duration: 10s; top: 15%; left: 95%; animation-delay: 3.5s; width: 4px; height: 4px; }
-    .particle:nth-child(11) { --duration: 12s; top: 45%; left: 75%; animation-delay: 0.3s; }
-    .particle:nth-child(12) { --duration: 9s; top: 75%; left: 25%; animation-delay: 2s; width: 2px; height: 2px; }
-    .particle:nth-child(13) { --duration: 11s; top: 25%; left: 85%; animation-delay: 1.8s; }
-    .particle:nth-child(14) { --duration: 14s; top: 65%; left: 15%; animation-delay: 0.6s; width: 4px; height: 4px; }
-    .particle:nth-child(15) { --duration: 8s; top: 85%; left: 45%; animation-delay: 2.8s; }
-    
-    /* Anillos de neón decorativos */
-    .neon-ring {
-        position: fixed;
-        border-radius: 50%;
-        border: 1px solid rgba(0, 212, 255, 0.06);
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        animation: neonPulse 8s ease-in-out infinite;
-    }
-    
-    .neon-ring:nth-child(16) {
-        width: 300px;
-        height: 300px;
-        top: -100px;
-        right: -100px;
-        border-width: 2px;
-        animation-delay: 0s;
-    }
-    
-    .neon-ring:nth-child(17) {
-        width: 200px;
-        height: 200px;
-        bottom: -50px;
-        left: -50px;
-        border-color: rgba(255, 215, 0, 0.04);
-        animation-delay: 2s;
-    }
-    
-    .neon-ring:nth-child(18) {
-        width: 400px;
-        height: 400px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-color: rgba(200, 0, 255, 0.03);
-        animation-delay: 4s;
-    }
-    
-    /* Círculos de neón grandes */
-    .neon-background-circle {
-        position: fixed;
-        border-radius: 50%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        border: 1px solid rgba(0, 212, 255, 0.05);
-        animation: neonPulse 8s ease-in-out infinite;
-        width: 500px;
-        height: 500px;
-        top: -150px;
-        right: -150px;
-        border-width: 2px;
-    }
-    
-    .neon-background-circle-2 {
-        position: fixed;
-        border-radius: 50%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        border: 1px solid rgba(255, 215, 0, 0.04);
-        animation: neonPulse 10s ease-in-out infinite 2s;
-        width: 350px;
-        height: 350px;
-        bottom: -100px;
-        left: -100px;
-        border-width: 2px;
-    }
-    
-    .neon-background-circle-3 {
-        position: fixed;
-        border-radius: 50%;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        border: 1px solid rgba(200, 0, 255, 0.03);
-        animation: neonPulse 12s ease-in-out infinite 4s;
-        width: 600px;
-        height: 600px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    
-    /* Texto de código decorativo */
-    .code-text {
-        position: fixed;
-        z-index: 1; /* <-- ENCIMA DEL VIDEO */
-        pointer-events: none;
-        font-family: 'Courier New', monospace;
-        color: rgba(0, 212, 255, 0.04);
-        font-size: 13px;
-        line-height: 1.8;
-        letter-spacing: 2px;
-        white-space: pre;
-        animation: codeFloat 20s linear infinite;
-        opacity: 0.5;
-    }
-    
-    .code-text:nth-child(19) { top: 8%; left: 3%; animation-delay: 0s; }
-    .code-text:nth-child(20) { top: 25%; right: 5%; animation-delay: -5s; }
-    .code-text:nth-child(21) { bottom: 15%; left: 5%; animation-delay: -10s; }
-    .code-text:nth-child(22) { bottom: 35%; right: 3%; animation-delay: -15s; }
-}
-
-/* ============================================================
-   ANIMACIONES FUTURISTAS
-   ============================================================ */
-@keyframes gridScroll {
-    0% {
-        background-position: 0 0, 0 0;
-    }
-    100% {
-        background-position: 0 800px, 0 0;
-    }
-}
-
-@keyframes particleFloat {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.2;
-    }
-    25% {
-        transform: translate(30px, -40px) scale(1.3);
-        opacity: 0.8;
-    }
-    50% {
-        transform: translate(-20px, 30px) scale(0.7);
-        opacity: 0.3;
-    }
-    75% {
-        transform: translate(40px, -20px) scale(1.1);
-        opacity: 0.6;
-    }
-}
-
-@keyframes neonPulse {
-    0%, 100% {
-        opacity: 0.3;
-        transform: scale(1) rotate(0deg);
-    }
-    25% {
-        opacity: 0.8;
-        transform: scale(1.02) rotate(3deg);
-    }
-    50% {
-        opacity: 0.2;
-        transform: scale(0.98) rotate(-2deg);
-    }
-    75% {
-        opacity: 0.6;
-        transform: scale(1.01) rotate(2deg);
-    }
-}
-
-@keyframes codeFloat {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.3;
-    }
-    50% {
-        transform: translateY(-25px) rotate(1deg);
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.3;
-    }
-}
-
-/* ============================================================
-   CONTENEDOR PRINCIPAL - DEBE ESTAR ENCIMA (z-index: 2)
+   CONTENEDOR PRINCIPAL - CENTRADO SOBRE EL VIDEO
    ============================================================ */
 .main-container {
     position: relative;
-    z-index: 2; /* <-- CAPA MÁS ALTA, ENCIMA DEL VIDEO Y DECORACIONES */
+    z-index: 2;
     width: 100%;
     max-width: var(--container-max-width);
     min-width: var(--container-min-width);
-    margin: var(--container-margin);
+    margin: 0 auto;
     padding: var(--container-padding);
     text-align: center;
     
@@ -422,14 +139,20 @@ body > div:first-child video {
     box-shadow: var(--glass-shadow);
     
     animation: containerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    overflow: visible;
+    
+    /* Centrado perfecto */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
 }
 
 /* ============================================================
    LOGO
    ============================================================ */
 .profile-logo {
-    margin: 0 auto 1.2rem;
+    margin: 0 auto 1.4rem;
     width: var(--logo-size);
     height: var(--logo-size);
     display: flex;
@@ -469,7 +192,7 @@ body > div:first-child video {
     
     filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
     animation: logoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
 .profile-logo img:hover {
@@ -499,7 +222,7 @@ body > div:first-child video {
     font-size: var(--name-font-size);
     font-weight: var(--name-font-weight);
     margin-bottom: 0.5rem;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.3px;
     line-height: 1.3;
     color: var(--name-color);
     text-shadow: 
@@ -519,12 +242,12 @@ body > div:first-child video {
 .profile-description {
     font-size: var(--description-font-size);
     font-weight: var(--description-font-weight);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.6rem;
     line-height: 1.6;
     opacity: 0.9;
-    color: #e8e8e8;
+    color: #f0f0f0;
     text-shadow: var(--text-shadow-medium);
-    letter-spacing: 0.15px;
+    letter-spacing: 0.2px;
     animation: textIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
     word-wrap: break-word;
 }
@@ -535,7 +258,7 @@ body > div:first-child video {
 .social-links {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.8rem;
     width: 100%;
 }
 
@@ -543,12 +266,12 @@ body > div:first-child video {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
+    gap: 14px;
     width: 100%;
     position: relative;
     overflow: hidden;
     
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-color);
     text-decoration: none;
     font-size: var(--button-font-size);
@@ -557,23 +280,22 @@ body > div:first-child video {
     border-radius: var(--border-radius);
     border: var(--button-border);
     box-shadow: var(--button-shadow);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     animation: buttonIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    min-height: 48px;
+    min-height: 50px;
 }
 
 .social-button:nth-child(1) { animation-delay: 0.8s; }
 .social-button:nth-child(2) { animation-delay: 0.9s; }
 .social-button:nth-child(3) { animation-delay: 1.0s; }
 .social-button:nth-child(4) { animation-delay: 1.1s; }
-.social-button:nth-child(5) { animation-delay: 1.2s; }
 
 @media (hover: hover) {
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.18);
         border: var(--button-hover-border);
         transform: translateY(-2px) scale(1.01);
         box-shadow: var(--button-hover-shadow);
@@ -601,9 +323,9 @@ body > div:first-child video {
 }
 
 .social-button i {
-    font-size: 1.2em;
-    width: 28px;
-    height: 28px;
+    font-size: 1.3em;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -620,7 +342,7 @@ body > div:first-child video {
 .social-button span {
     flex: 1;
     text-align: center;
-    margin-right: 28px;
+    margin-right: 32px;
     text-shadow: var(--text-shadow-light);
     letter-spacing: 0.3px;
     font-weight: 600;
@@ -631,16 +353,16 @@ body > div:first-child video {
 }
 
 /* ============================================================
-   ANIMACIONES PRINCIPALES
+   ANIMACIONES
    ============================================================ */
 @keyframes containerIn {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.95);
+        transform: translate(-50%, -50%) scale(0.95);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translate(-50%, -50%) scale(1);
     }
 }
 
@@ -678,215 +400,115 @@ body > div:first-child video {
 }
 
 @keyframes goldShine {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 @keyframes goldGlow {
-    0%, 100% {
-        opacity: 0.2;
-        transform: rotate(0deg);
-    }
-    50% {
-        opacity: 0.6;
-        transform: rotate(180deg);
-    }
+    0%, 100% { opacity: 0.2; transform: rotate(0deg); }
+    50% { opacity: 0.6; transform: rotate(180deg); }
 }
 
 /* ============================================================
-   RESPONSIVE - TODOS LOS DISPOSITIVOS
+   RESPONSIVE - MISMA APARIENCIA EN TODOS
    ============================================================ */
-
-/* Pantallas muy pequeñas (≤ 360px) */
 @media (max-width: 360px) {
     :root {
-        --logo-size: 75px;
-        --name-font-size: 1.3rem;
-        --description-font-size: 0.7rem;
-        --button-font-size: 0.75rem;
-        --button-padding: 12px 14px;
-        --container-padding: 1.4rem 1rem;
-        --container-margin: 10px;
-        --glass-radius: 16px;
-        --container-max-width: 100%;
-        --container-min-width: 100%;
-    }
-    
-    .social-button {
-        min-height: 40px;
-        gap: 10px;
-    }
-    
-    .social-button i {
-        width: 22px;
-        height: 22px;
-        font-size: 1em;
-    }
-    
-    .social-button span {
-        margin-right: 22px;
-        font-size: 0.7rem;
-    }
-    
-    .social-links {
-        gap: 0.6rem;
-    }
-}
-
-/* Móviles estándar (361px - 480px) */
-@media (min-width: 361px) and (max-width: 480px) {
-    :root {
-        --logo-size: 85px;
-        --name-font-size: 1.5rem;
-        --description-font-size: 0.75rem;
-        --button-font-size: 0.8rem;
-        --button-padding: 13px 16px;
-        --container-padding: 1.6rem 1.2rem;
-        --container-margin: 12px;
-        --glass-radius: 18px;
-        --container-max-width: 100%;
-        --container-min-width: 100%;
-    }
-    
-    .social-button {
-        min-height: 44px;
-    }
-    
-    .social-button i {
-        width: 24px;
-        height: 24px;
-        font-size: 1.05em;
-    }
-    
-    .social-button span {
-        margin-right: 24px;
-    }
-    
-    .social-links {
-        gap: 0.65rem;
-    }
-}
-
-/* Móviles grandes (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    :root {
-        --logo-size: 95px;
+        --logo-size: 90px;
         --name-font-size: 1.6rem;
         --description-font-size: 0.8rem;
         --button-font-size: 0.85rem;
-        --button-padding: 14px 17px;
-        --container-padding: 1.8rem 1.4rem;
-        --container-max-width: 340px;
-        --container-min-width: 290px;
+        --button-padding: 12px 16px;
+        --container-padding: 1.6rem 1.2rem;
         --glass-radius: 20px;
+        --container-max-width: 95%;
+        --container-min-width: 280px;
     }
-    
-    .social-button {
-        min-height: 46px;
-    }
+    .social-button { min-height: 44px; gap: 12px; }
+    .social-button i { width: 28px; height: 28px; font-size: 1.1em; }
+    .social-button span { margin-right: 28px; font-size: 0.85rem; }
+    .social-links { gap: 0.7rem; }
 }
 
-/* Tablets (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 361px) and (max-width: 480px) {
     :root {
-        --logo-size: 105px;
+        --logo-size: 100px;
         --name-font-size: 1.8rem;
         --description-font-size: 0.85rem;
         --button-font-size: 0.9rem;
-        --container-padding: 2rem 1.5rem;
-        --container-max-width: 380px;
-        --container-min-width: 320px;
+        --button-padding: 14px 18px;
+        --container-padding: 1.8rem 1.4rem;
         --glass-radius: 22px;
+        --container-max-width: 92%;
+        --container-min-width: 280px;
     }
-    
-    .social-button {
-        min-height: 50px;
-    }
+    .social-button { min-height: 46px; }
+    .social-button i { width: 30px; height: 30px; font-size: 1.15em; }
+    .social-button span { margin-right: 30px; }
+    .social-links { gap: 0.7rem; }
 }
 
-/* Escritorio (1025px - 1440px) */
-@media (min-width: 1025px) and (max-width: 1440px) {
+@media (min-width: 481px) and (max-width: 1024px) {
     :root {
         --logo-size: 110px;
-        --name-font-size: 1.9rem;
+        --name-font-size: 2rem;
         --description-font-size: 0.9rem;
         --button-font-size: 0.95rem;
-        --container-padding: 2.2rem 1.8rem;
-        --container-max-width: 400px;
-        --container-min-width: 340px;
+        --container-padding: 2rem 1.6rem;
+        --container-max-width: 380px;
+        --container-min-width: 320px;
         --glass-radius: 24px;
     }
-    
-    .social-button {
-        min-height: 52px;
-    }
-    
-    .social-links {
-        gap: 0.8rem;
-    }
+    .social-button { min-height: 48px; }
 }
 
-/* Pantallas grandes y TV (> 1440px) */
-@media (min-width: 1441px) {
+@media (min-width: 1025px) {
     :root {
         --logo-size: 120px;
         --name-font-size: 2.2rem;
         --description-font-size: 1rem;
         --button-font-size: 1rem;
-        --container-padding: 2.5rem 2rem;
-        --container-max-width: 440px;
-        --container-min-width: 380px;
-        --container-margin: 24px;
+        --container-padding: 2.2rem 1.8rem;
+        --container-max-width: 420px;
+        --container-min-width: 360px;
         --glass-radius: 26px;
-        --button-padding: 16px 22px;
     }
-    
-    .social-button {
-        min-height: 56px;
-        gap: 14px;
+    .social-button { min-height: 50px; }
+    .social-links { gap: 0.8rem; }
+}
+
+@media (min-width: 1441px) {
+    :root {
+        --logo-size: 140px;
+        --name-font-size: 2.6rem;
+        --description-font-size: 1.1rem;
+        --button-font-size: 1.1rem;
+        --container-padding: 2.8rem 2.2rem;
+        --container-max-width: 480px;
+        --container-min-width: 400px;
+        --glass-radius: 30px;
+        --button-padding: 18px 26px;
     }
-    
-    .social-button i {
-        width: 32px;
-        height: 32px;
-        font-size: 1.3em;
-    }
-    
-    .social-button span {
-        margin-right: 32px;
-    }
-    
-    .social-links {
-        gap: 0.85rem;
-    }
+    .social-button { min-height: 56px; gap: 16px; }
+    .social-button i { width: 36px; height: 36px; font-size: 1.4em; }
+    .social-button span { margin-right: 36px; }
+    .social-links { gap: 1rem; }
 }
 
 /* ============================================================
    DISPOSITIVOS TÁCTILES
    ============================================================ */
 @media (hover: none) and (pointer: coarse) {
-    .social-button {
-        min-height: 48px;
-    }
-    
+    .social-button { min-height: 50px; }
     .social-button:hover {
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(255, 255, 255, 0.08);
         border: var(--button-border);
         transform: none;
         box-shadow: var(--button-shadow);
     }
-    
     .social-button:active {
         transform: scale(0.95);
-        background: rgba(255, 255, 255, 0.14);
-    }
-    
-    input, textarea, select {
-        font-size: 16px;
+        background: rgba(255, 255, 255, 0.16);
     }
 }
 
@@ -894,20 +516,9 @@ body > div:first-child video {
    ACCESIBILIDAD
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-    }
-}
-
-@media (prefers-contrast: high) {
-    :root {
-        --glass-border: 2.5px solid rgba(255, 215, 0, 0.4);
-        --button-border: 2.5px solid rgba(255, 215, 0, 0.5);
-        --text-shadow-strong: 2px 2px 0 #000000;
-        --button-hover-border: 2.5px solid rgba(255, 215, 0, 0.8);
     }
 }
