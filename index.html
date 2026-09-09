@@ -1,102 +1,256 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <!-- ============================================================
+    CONFIGURACIÓN BÁSICA
+    ============================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=yes">
-    <title>Link in Bio - Xolo Tech</title>
-    
-    <!-- Font Awesome para iconos de redes sociales -->
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="XoloTech | Grupo de Ingenieros en Sistemas Computacionales. Desarrollamos soluciones tecnológicas para impulsar tu negocio.">
+    <title>XoloTech | Redes Sociales</title>
+
+    <!-- ============================================================
+    FONT AWESOME
+    ============================================================ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <!-- Fuentes Google - Poppins para mejor tipografía -->
+
+    <!-- ============================================================
+    GOOGLE FONTS
+    ============================================================ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="styless.css">
-</head>
-<body>
 
     <!-- ============================================================
-         CONTENEDOR PRINCIPAL CENTRADO
-         ============================================================ -->
+    CSS PRINCIPAL
+    ============================================================ -->
+    <link rel="stylesheet" href="styless.css">
+</head>
+
+<body>
+    <!-- ============================================================
+    VIDEO DE FONDO
+    ============================================================ -->
+    <div class="video-background-container">
+        <video class="video-background" autoplay muted loop playsinline>
+            <source src="img/fondo.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
+    <!-- ============================================================
+    CONTENEDOR PRINCIPAL
+    ============================================================ -->
     <main class="main-container">
-        
-        <!-- LOGO: Imagen de perfil circular -->
+
+        <!-- ========================================================
+        LOGO
+        ======================================================== -->
         <div class="profile-logo" id="profile-logo">
-            <!-- La imagen se insertará dinámicamente desde script.js -->
+            <!-- El logo se genera mediante script.js -->
         </div>
 
-        <!-- NOMBRE: Título principal -->
+        <!-- ========================================================
+        NOMBRE
+        ======================================================== -->
         <h1 class="profile-name" id="profile-name">
-            <!-- El nombre se insertará dinámicamente -->
+            <!-- El nombre se genera mediante script.js -->
         </h1>
 
-        <!-- DESCRIPCIÓN: Texto corto debajo del nombre -->
+        <!-- ========================================================
+        DESCRIPCIÓN
+        ======================================================== -->
         <p class="profile-description" id="profile-description">
-            <!-- La descripción se insertará dinámicamente -->
+            <!-- La descripción se genera mediante script.js -->
         </p>
 
-        <!-- BOTONES: Contenedor para los enlaces de redes sociales -->
-        <div class="social-links" id="social-links">
-            <!-- Los botones se generarán dinámicamente desde script.js -->
+        <!-- ========================================================
+        ESTADO (Abierto/Cerrado con hora)
+        ======================================================== -->
+        <div class="status-container">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">Abierto</span>
+            <span class="status-time" id="statusTime"></span>
         </div>
+
+        <!-- ========================================================
+        REDES SOCIALES
+        ======================================================== -->
+        <div class="social-links" id="social-links">
+            <!-- Los botones se generan mediante script.js -->
+        </div>
+
+        <!-- ========================================================
+        BOTÓN TRANSFERENCIA
+        ======================================================== -->
+        <button class="transfer-button" id="transferButton">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Transferencia</span>
+        </button>
 
     </main>
 
     <!-- ============================================================
-         ELEMENTOS DECORATIVOS FUTURISTAS (SOLO VISIBLES EN PC)
-         ============================================================ -->
-    
-    <!-- Partículas flotantes -->
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-    
-    <!-- Anillos de neón decorativos -->
-    <div class="neon-ring"></div>
-    <div class="neon-ring"></div>
-    <div class="neon-ring"></div>
-    
-    <!-- Círculos de neón grandes (versión mejorada) -->
-    <div class="neon-background-circle"></div>
-    <div class="neon-background-circle-2"></div>
-    <div class="neon-background-circle-3"></div>
+    MODAL DE TRANSFERENCIA
+    ============================================================ -->
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal-container">
+            
+            <!-- CABECERA DEL MODAL -->
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Datos de Transferencia
+                </h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
-    <!-- Texto de código flotante decorativo -->
-    <div class="code-text">
-        &lt;?php echo "XoloTech"; ?&gt;
-    </div>
-    <div class="code-text">
-        const future = new Technology();
-    </div>
-    <div class="code-text">
-        function innovate() { return "2026"; }
-    </div>
-    <div class="code-text">
-        #XoloTech #Innovación #Tecnología
+            <!-- CONTENIDO DEL MODAL -->
+            <div class="modal-body">
+                
+                <!-- Banco -->
+                <div class="modal-field">
+                    <label class="field-label">
+                        <i class="fas fa-university"></i>
+                        Banco
+                    </label>
+                    <div class="field-content">
+                        <span class="field-value" id="bankValue">BBVA México</span>
+                        <button class="copy-button" data-copy="bankValue">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Titular -->
+                <div class="modal-field">
+                    <label class="field-label">
+                        <i class="fas fa-user"></i>
+                        Titular
+                    </label>
+                    <div class="field-content">
+                        <span class="field-value" id="ownerValue">XoloTech Ingeniería S.A. de C.V.</span>
+                        <button class="copy-button" data-copy="ownerValue">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Clave Interbancaria (CLABE) -->
+                <div class="modal-field">
+                    <label class="field-label">
+                        <i class="fas fa-key"></i>
+                        Clave Interbancaria (CLABE)
+                    </label>
+                    <div class="field-content">
+                        <span class="field-value" id="clabeValue">012 345 6789 012345678</span>
+                        <button class="copy-button" data-copy="clabeValue">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Número de Cuenta -->
+                <div class="modal-field">
+                    <label class="field-label">
+                        <i class="fas fa-credit-card"></i>
+                        Número de Cuenta
+                    </label>
+                    <div class="field-content">
+                        <span class="field-value" id="accountValue">1234 5678 9012 3456</span>
+                        <button class="copy-button" data-copy="accountValue">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Concepto -->
+                <div class="modal-field">
+                    <label class="field-label">
+                        <i class="fas fa-tag"></i>
+                        Concepto
+                    </label>
+                    <div class="field-content">
+                        <span class="field-value" id="conceptValue">Pago de servicios profesionales</span>
+                        <button class="copy-button" data-copy="conceptValue">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PIE DEL MODAL -->
+            <div class="modal-footer">
+                <button class="modal-back-button" id="backToMain">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver
+                </button>
+            </div>
+
+        </div>
     </div>
 
     <!-- ============================================================
-         SCRIPTS
-         ============================================================ -->
-    <!-- JavaScript para la configuración y la lógica -->
-    <script src="script.js"></script>
-    
+    WHATSAPP FLOTANTE
+    ============================================================ -->
+    <a href="https://wa.me/527441371570" 
+       class="floating-whatsapp" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ============================================================
+    ELEMENTOS DECORATIVOS (partículas)
+    ============================================================ -->
+    <div class="particles" aria-hidden="true">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ============================================================
+    ANILLOS DE NEÓN
+    ============================================================ -->
+    <div class="neon-ring" aria-hidden="true"></div>
+    <div class="neon-ring" aria-hidden="true"></div>
+    <div class="neon-ring" aria-hidden="true"></div>
+
+    <!-- ============================================================
+    CÍRCULOS DE NEÓN
+    ============================================================ -->
+    <div class="neon-background-circle" aria-hidden="true"></div>
+    <div class="neon-background-circle-2" aria-hidden="true"></div>
+    <div class="neon-background-circle-3" aria-hidden="true"></div>
+
+    <!-- ============================================================
+    JAVASCRIPT PRINCIPAL
+    ============================================================ -->
+    <script src="script.js" defer></script>
+
 </body>
+
 </html>
