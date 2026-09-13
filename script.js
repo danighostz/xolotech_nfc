@@ -1,45 +1,25 @@
 const profile = {
     // --- IDENTIDAD ---
     name: "Síguenos en nuestras redes sociales",
-    description: "XoloTech | Grupo de Ingenieros en Sistemas Computacionales. Desarrollamos soluciones tecnológicas para impulsar tu negocio",
+    description: "Grupo de Ingenieros en Sistemas Computacionales Desarrollamos soluciones tecnológicas para impulsar tu negocio. ",
 
     // --- IMÁGENES ---
     logo: "img/logo.png",
 
-    // --- VIDEO DE FONDO ---
-    backgroundVideo: "img/fondo.mp4",
+    // --- FONDO (IMAGEN) ---
+    backgroundImage: "img/fondo.png",
 
     // --- CONFIGURACIÓN DEL FONDO ---
     backgroundSettings: {
-        overlayOpacity: 0.10
+        overlayOpacity: 0.45
     },
 
     // --- REDES SOCIALES ---
     socialLinks: [
-        {
-            name: "Facebook",
-            url: "https://www.facebook.com/profile.php?id=61592220519581",
-            icon: "fab fa-facebook-f",
-            color: "#1877F2"
-        },
-        {
-            name: "Instagram",
-            url: "https://www.instagram.com/xolotech_acapulco/",
-            icon: "fab fa-instagram",
-            color: "#E1306C"
-        },
-        {
-            name: "TikTok",
-            url: "https://www.tiktok.com/@xolotech_acapulco",
-            icon: "fab fa-tiktok",
-            color: "#ffffff"
-        },
-        {
-            name: "Califícanos en Google",
-            url: "https://g.page/r/Cct7-wXd-vIzEBM/review",
-            icon: "fab fa-google",
-            color: "#EA4335"
-        }
+        { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61592220519581", icon: "fab fa-facebook-f", color: "#1877F2" },
+        { name: "Instagram", url: "https://www.instagram.com/xolotech_acapulco/", icon: "fab fa-instagram", color: "#E1306C" },
+        { name: "TikTok", url: "https://www.tiktok.com/@xolotech_acapulco", icon: "fab fa-tiktok", color: "#ffffff" },
+        { name: "Califícanos en Google", url: "https://g.page/r/Cct7-wXd-vIzEBM/review", icon: "fab fa-google", color: "#EA4335" }
     ],
 
     // --- WHATSAPP FLOTANTE ---
@@ -64,206 +44,37 @@ const profile = {
 // INICIO
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-    let videoElement = null;
-    let videoContainer = null;
-    let videoSource = null;
+
+    let statusInterval = null;
+    let isModalClosing = false;
 
     // ========================================================
-    // CREAR VIDEO DE FONDO
+    // CREAR FONDO CON IMAGEN
     // ========================================================
-    function createBackgroundVideo() {
-        // Si ya existe, eliminarlo
-        if (videoContainer) {
-            videoContainer.remove();
-        }
+    function createBackgroundImage() {
+        const existingContainer = document.querySelector(".image-background-container");
+        const existingOverlay = document.querySelector(".image-overlay");
+        if (existingContainer) existingContainer.remove();
+        if (existingOverlay) existingOverlay.remove();
 
-        // Crear contenedor
-        videoContainer = document.createElement("div");
-        videoContainer.className = "video-background-container";
+        const container = document.createElement("div");
+        container.className = "image-background-container";
 
-        // Crear video
-        videoElement = document.createElement("video");
-        videoElement.className = "video-background";
+        const imageDiv = document.createElement("div");
+        imageDiv.className = "image-background";
+        imageDiv.style.backgroundImage = `url('${profile.backgroundImage}')`;
 
-        // Guardar fuente
-        videoSource = profile.backgroundVideo;
-        videoElement.src = videoSource;
+        container.appendChild(imageDiv);
+        document.body.prepend(container);
 
-        // Configuración
-        videoElement.autoplay = true;
-        videoElement.loop = true;
-        videoElement.muted = true;
-        videoElement.defaultMuted = true;
-        videoElement.playsInline = true;
-
-        // Compatibilidad iPhone / Android
-        videoElement.setAttribute("autoplay", "");
-        videoElement.setAttribute("muted", "");
-        videoElement.setAttribute("loop", "");
-        videoElement.setAttribute("playsinline", "");
-        videoElement.setAttribute("webkit-playsinline", "");
-        videoElement.setAttribute("preload", "auto");
-        videoElement.controls = false;
-
-        // ====================================================
-        // ERROR DEL VIDEO
-        // ====================================================
-        videoElement.addEventListener("error", () => {
-            console.warn("⚠️ Error cargando el video de fondo");
-            if (videoContainer) {
-                videoContainer.style.backgroundColor = "#0a0a0a";
-            }
-        });
-
-        // ====================================================
-        // CUANDO TERMINA
-        // ====================================================
-        videoElement.addEventListener("ended", () => {
-            videoElement.currentTime = 0;
-            playVideo();
-        });
-
-        // Agregar video
-        videoContainer.appendChild(videoElement);
-
-        // Colocarlo al principio
-        document.body.prepend(videoContainer);
-
-        // ====================================================
-        // OVERLAY
-        // ====================================================
         if (profile.backgroundSettings && profile.backgroundSettings.overlayOpacity !== undefined) {
-            const existingOverlay = document.querySelector(".video-overlay");
-            if (existingOverlay) {
-                existingOverlay.remove();
-            }
-
             const overlay = document.createElement("div");
-            overlay.className = "video-overlay";
+            overlay.className = "image-overlay";
             overlay.style.backgroundColor = `rgba(0, 0, 0, ${profile.backgroundSettings.overlayOpacity})`;
             document.body.appendChild(overlay);
         }
-
-        // Intentar reproducir
-        playVideo();
     }
-
-    // ========================================================
-    // REPRODUCIR VIDEO
-    // ========================================================
-    function playVideo() {
-        if (!videoElement) return;
-
-        // Asegurar silencio
-        videoElement.muted = true;
-        videoElement.defaultMuted = true;
-
-        // Si terminó
-        if (videoElement.ended) {
-            try {
-                videoElement.currentTime = 0;
-            } catch (error) {}
-        }
-
-        const promise = videoElement.play();
-        if (promise !== undefined) {
-            promise.catch(() => {
-                console.log("ℹ️ El navegador bloqueó temporalmente la reproducción automática.");
-            });
-        }
-    }
-
-    // ========================================================
-    // REINICIAR COMPLETAMENTE EL VIDEO
-    // ========================================================
-    function reloadVideo() {
-        if (!videoElement) return;
-
-        try {
-            videoElement.pause();
-            videoElement.removeAttribute("src");
-            videoElement.load();
-
-            setTimeout(() => {
-                videoElement.src = videoSource;
-                videoElement.muted = true;
-                videoElement.defaultMuted = true;
-                videoElement.setAttribute("muted", "");
-                videoElement.load();
-
-                setTimeout(() => {
-                    playVideo();
-                }, 150);
-            }, 100);
-        } catch (error) {
-            console.warn("No se pudo reiniciar el video.", error);
-            playVideo();
-        }
-    }
-
-    // ========================================================
-    // CREAR VIDEO
-    // ========================================================
-    if (profile.backgroundVideo) {
-        createBackgroundVideo();
-    }
-
-    // ========================================================
-    // CUANDO LA PÁGINA VUELVE A SER VISIBLE
-    // ========================================================
-    document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) {
-            playVideo();
-
-            setTimeout(() => {
-                if (videoElement && videoElement.paused) {
-                    reloadVideo();
-                }
-            }, 300);
-
-            setTimeout(() => {
-                if (videoElement && videoElement.paused) {
-                    playVideo();
-                }
-            }, 1000);
-        }
-    });
-
-    // ========================================================
-    // CUANDO LA VENTANA RECUPERA EL FOCO
-    // ========================================================
-    window.addEventListener("focus", () => {
-        setTimeout(playVideo, 100);
-        setTimeout(playVideo, 500);
-    });
-
-    // ========================================================
-    // PAGESHOW
-    // ========================================================
-    window.addEventListener("pageshow", () => {
-        setTimeout(playVideo, 100);
-        setTimeout(playVideo, 500);
-    });
-
-    // ========================================================
-    // DETECTAR PAUSA INESPERADA
-    // ========================================================
-    if (videoElement) {
-        videoElement.addEventListener("pause", () => {
-            if (!document.hidden) {
-                setTimeout(playVideo, 100);
-            }
-        });
-    }
-
-    // ========================================================
-    // COMPROBACIÓN PERIÓDICA
-    // ========================================================
-    setInterval(() => {
-        if (videoElement && videoElement.paused && !document.hidden) {
-            playVideo();
-        }
-    }, 2000);
+    if (profile.backgroundImage) createBackgroundImage();
 
     // ========================================================
     // CARGAR LOGO
@@ -283,17 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // CARGAR NOMBRE
     // ========================================================
     const nameElement = document.getElementById("profile-name");
-    if (nameElement) {
-        nameElement.textContent = profile.name;
-    }
+    if (nameElement) nameElement.textContent = profile.name;
 
     // ========================================================
     // CARGAR DESCRIPCIÓN
     // ========================================================
     const descriptionElement = document.getElementById("profile-description");
-    if (descriptionElement) {
-        descriptionElement.textContent = profile.description;
-    }
+    if (descriptionElement) descriptionElement.textContent = profile.description;
 
     // ========================================================
     // GENERAR REDES SOCIALES
@@ -301,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const socialLinksContainer = document.getElementById("social-links");
     if (socialLinksContainer) {
         socialLinksContainer.innerHTML = "";
-
         profile.socialLinks.forEach((link, index) => {
             const linkElement = document.createElement("a");
             linkElement.href = link.url;
@@ -310,18 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
             linkElement.className = "social-button";
             linkElement.style.animationDelay = `${0.6 + index * 0.15}s`;
 
-            // ICONO
             const iconElement = document.createElement("i");
             iconElement.className = link.icon;
-            if (link.color) {
-                iconElement.style.color = link.color;
-            }
+            if (link.color) iconElement.style.color = link.color;
 
-            // TEXTO
             const spanElement = document.createElement("span");
             spanElement.textContent = link.name;
 
-            // ARMAR BOTÓN
             linkElement.appendChild(iconElement);
             linkElement.appendChild(spanElement);
             socialLinksContainer.appendChild(linkElement);
@@ -332,11 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // WHATSAPP FLOTANTE
     // ========================================================
     function createFloatingWhatsApp() {
-        // Evitar duplicados
         const existing = document.querySelector(".floating-whatsapp");
-        if (existing) {
-            existing.remove();
-        }
+        if (existing) existing.remove();
 
         const whatsapp = document.createElement("a");
         whatsapp.className = "floating-whatsapp";
@@ -345,19 +143,13 @@ document.addEventListener("DOMContentLoaded", () => {
         whatsapp.rel = "noopener noreferrer";
         whatsapp.setAttribute("aria-label", "Contactar por WhatsApp");
 
-        // ICONO
         const icon = document.createElement("i");
         icon.className = profile.whatsapp.icon;
         icon.style.color = "#ffffff";
 
-        // AGREGAR ICONO
         whatsapp.appendChild(icon);
-
-        // AGREGAR AL BODY
         document.body.appendChild(whatsapp);
     }
-
-    // Crear WhatsApp
     createFloatingWhatsApp();
 
     // ========================================================
@@ -366,9 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateStatus() {
         const now = new Date();
         const hour = now.getHours();
-        const day = now.getDay(); // 0 = domingo, 6 = sábado
-
-        // Horario: Lunes a Viernes de 9:00 AM a 10:00 PM
+        const day = now.getDay();
         const isOpen = (day >= 1 && day <= 5) && (hour >= 9 && hour < 22);
 
         const dot = document.getElementById('statusDot');
@@ -379,14 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isOpen) {
                 dot.className = 'status-dot open';
                 text.className = 'status-text open';
-                text.textContent = 'Abierto';
+                text.textContent = 'Acapulco Guerrero México';
             } else {
                 dot.className = 'status-dot closed';
                 text.className = 'status-text closed';
-                text.textContent = 'Cerrado';
+                text.textContent = 'Acapulco Guerrero México';
             }
-
-            // Formatear hora
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -394,12 +182,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Actualizar estado cada minuto
-    updateStatus();
-    setInterval(updateStatus, 60000);
+    function startStatusInterval() {
+        if (statusInterval) return;
+        updateStatus();
+        statusInterval = setInterval(updateStatus, 60000);
+    }
+    function stopStatusInterval() {
+        if (statusInterval) {
+            clearInterval(statusInterval);
+            statusInterval = null;
+        }
+    }
+    startStatusInterval();
 
     // ========================================================
-    // CARGAR DATOS DE TRANSFERENCIA EN EL MODAL
+    // CARGAR DATOS DE TRANSFERENCIA
     // ========================================================
     function loadTransferData() {
         const bankValue = document.getElementById('bankValue');
@@ -414,11 +211,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (accountValue) accountValue.textContent = profile.transferData.account;
         if (conceptValue) conceptValue.textContent = profile.transferData.concept;
     }
-
     loadTransferData();
 
     // ========================================================
+    // ⚡ MODO RENDIMIENTO
+    // ========================================================
+    function pauseHeavyAnimations() {
+        document.documentElement.classList.add('modal-performance-mode');
+        stopStatusInterval();
+    }
+
+    function resumeHeavyAnimations() {
+        document.documentElement.classList.remove('modal-performance-mode');
+        startStatusInterval();
+    }
+
+    // ========================================================
     // MODAL DE TRANSFERENCIA
+    // ⚡ SIN bloquear el scroll del body — eso evita el
+    //   "momentum" que consume los taps en móvil
     // ========================================================
     const transferButton = document.getElementById('transferButton');
     const modal = document.getElementById('transferModal');
@@ -426,32 +237,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const backToMain = document.getElementById('backToMain');
 
     function openModal() {
-        if (modal) {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+        if (!modal) return;
+        isModalClosing = false;
+
+        // ⚡ Pausar animaciones y mostrar el modal
+        pauseHeavyAnimations();
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+
+        // ⚡ NO bloqueamos el scroll del body.
+        // El modal tiene su propio scroll interno (max-height: 90vh + overflow-y: auto).
+        // El fondo simplemente queda tapado visualmente por el overlay.
     }
 
     function closeModalFunc() {
-        if (modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+        if (!modal || isModalClosing) return;
+        if (!modal.classList.contains('active')) return;
+
+        isModalClosing = true;
+
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+
+        // Reanudar animaciones en el siguiente frame
+        requestAnimationFrame(() => {
+            resumeHeavyAnimations();
+            setTimeout(() => { isModalClosing = false; }, 150);
+        });
     }
 
+    // ---- ABRIR ----
     if (transferButton) {
         transferButton.addEventListener('click', openModal);
     }
 
+    // ---- CERRAR: X ----
     if (closeModal) {
         closeModal.addEventListener('click', closeModalFunc);
     }
 
+    // ---- CERRAR: VOLVER ----
     if (backToMain) {
         backToMain.addEventListener('click', closeModalFunc);
     }
 
-    // Cerrar modal al hacer clic en el overlay
+    // ---- CERRAR: click en overlay ----
     if (modal) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -460,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Cerrar con tecla ESC
+    // ---- CERRAR: ESC ----
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
             closeModalFunc();
@@ -468,88 +298,86 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ========================================================
-    // COPIAR TEXTO - DURA EXACTAMENTE 3 SEGUNDOS
+    // COPIAR TEXTO
     // ========================================================
-    document.querySelectorAll('.copy-button').forEach(button => {
-        button.addEventListener('click', function(e) {
+    function showFeedback(btn) {
+        if (btn.classList.contains('copied')) return;
+
+        const originalHTML = btn.innerHTML;
+        const originalClass = btn.className;
+
+        btn.innerHTML = '<i class="fas fa-check"></i> Copiado';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.className = originalClass;
+        }, 3000);
+    }
+
+    function fallbackCopy(text, button) {
+        try {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.setAttribute('readonly', '');
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '1px';
+            textArea.style.height = '1px';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+
+            if (navigator.userAgent.match(/ipad|iphone/i)) {
+                const range = document.createRange();
+                range.selectNodeContents(textArea);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                textArea.setSelectionRange(0, text.length);
+            } else {
+                textArea.select();
+                textArea.setSelectionRange(0, text.length);
+            }
+
+            const success = document.execCommand('copy');
+            requestAnimationFrame(() => {
+                if (textArea.parentNode) textArea.parentNode.removeChild(textArea);
+            });
+
+            if (success) showFeedback(button);
+        } catch (err) {
+            console.warn('Error al copiar (fallback):', err);
+        }
+    }
+
+    document.querySelectorAll('.copy-button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            const targetId = this.getAttribute('data-copy');
+            e.stopPropagation();
+
+            const targetId = btn.getAttribute('data-copy');
+            if (!targetId) return;
             const textElement = document.getElementById(targetId);
-            
             if (!textElement) return;
-            
+
             const textToCopy = textElement.textContent.trim();
 
-            // Función para mostrar feedback con duración exacta de 3 segundos
-            const showFeedback = (btn) => {
-                // Guardar estado original
-                const originalHTML = btn.innerHTML;
-                const originalClass = btn.className;
-                
-                // Cambiar inmediatamente a "Copiado"
-                btn.innerHTML = '<i class="fas fa-check"></i> Copiado';
-                btn.classList.add('copied');
-                
-                // Restaurar después de EXACTAMENTE 3 segundos (3000ms)
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.className = originalClass;
-                }, 3000);
-            };
-
-            // Intentar copiar con la API moderna
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
                 navigator.clipboard.writeText(textToCopy)
-                    .then(() => {
-                        showFeedback(this);
-                    })
-                    .catch(() => {
-                        fallbackCopy(textToCopy, this, showFeedback);
-                    });
+                    .then(() => showFeedback(btn))
+                    .catch(() => fallbackCopy(textToCopy, btn));
             } else {
-                fallbackCopy(textToCopy, this, showFeedback);
+                fallbackCopy(textToCopy, btn);
             }
         });
     });
 
-    function fallbackCopy(text, button, showFeedback) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-9999px';
-        textArea.style.top = '-9999px';
-        textArea.style.opacity = '0';
-        textArea.style.pointerEvents = 'none';
-        document.body.appendChild(textArea);
-        
-        textArea.select();
-        textArea.setSelectionRange(0, text.length);
-        
-        try {
-            const success = document.execCommand('copy');
-            if (success) {
-                showFeedback(button);
-            } else {
-                console.warn('No se pudo copiar el texto');
-            }
-        } catch (err) {
-            console.warn('Error al copiar:', err);
-        }
-        
-        document.body.removeChild(textArea);
-    }
-
     // ========================================================
-    // PREVENIR QUE LOS CLICS EN LOS BOTONES AFECTEN LA REPRODUCCIÓN
-    // ========================================================
-    document.addEventListener("click", (event) => {
-        const clickedLink = event.target.closest("a");
-        if (!clickedLink) return;
-    }, true);
-
-    // ========================================================
-    // MENSAJE DE CONSOLA
-    // ========================================================
-    console.log("✅ XoloTech - Perfil cargado correctamente");
+    console.log("✅ XoloTech - Perfil cargado correctamente (fondo con imagen)");
 });
