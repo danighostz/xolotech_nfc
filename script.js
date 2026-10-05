@@ -1,7 +1,7 @@
 const profile = {
     // --- IDENTIDAD ---
     name: "Síguenos en nuestras redes sociales",
-    description: "Grupo de Ingenieros en Sistemas Computacionales Desarrollamos soluciones tecnológicas para impulsar tu negocio. ",
+    description: "Grupo de Ingenieros en Sistemas Computacionales. Desarrollamos soluciones tecnológicas para impulsar tu negocio.",
 
     // --- IMÁGENES ---
     logo: "img/logo.png",
@@ -46,7 +46,33 @@ const profile = {
 document.addEventListener("DOMContentLoaded", () => {
 
     let statusInterval = null;
-    let isModalClosing = false;
+
+    // ========================================================
+    // BLOQUEO DE SCROLL GLOBAL CUANDO HAY MODAL ABIERTO
+    // ========================================================
+    let savedScrollY = 0;
+
+    function lockBodyScroll() {
+        savedScrollY = window.scrollY || window.pageYOffset || 0;
+        document.body.style.top = `-${savedScrollY}px`;
+        document.body.classList.add('modal-open');
+    }
+
+    function unlockBodyScroll() {
+        document.body.classList.remove('modal-open');
+        document.body.style.top = '';
+        window.scrollTo(0, savedScrollY);
+    }
+
+    // Bloquea el scroll táctil dentro del body cuando hay modal (para iOS)
+    document.addEventListener('touchmove', (e) => {
+        if (document.body.classList.contains('modal-open')) {
+            const modalScrollable = e.target.closest('.modal-container');
+            if (!modalScrollable) {
+                e.preventDefault();
+            }
+        }
+    }, { passive: false });
 
     // ========================================================
     // CREAR FONDO CON IMAGEN
@@ -227,79 +253,169 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ========================================================
-    // MODAL DE TRANSFERENCIA
-    // ⚡ SIN bloquear el scroll del body — eso evita el
-    //   "momentum" que consume los taps en móvil
+    // SISTEMA GENÉRICO DE MODALES
     // ========================================================
-    const transferButton = document.getElementById('transferButton');
-    const modal = document.getElementById('transferModal');
-    const closeModal = document.getElementById('closeModal');
-    const backToMain = document.getElementById('backToMain');
+    const modalStack = [];
 
-    function openModal() {
+    function openModalById(modalId) {
+        const modal = document.getElementById(modalId);
         if (!modal) return;
-        isModalClosing = false;
+        if (modal.classList.contains('active')) return;
 
-        // ⚡ Pausar animaciones y mostrar el modal
-        pauseHeavyAnimations();
+        if (modalStack.length === 0) {
+            lockBodyScroll();
+            pauseHeavyAnimations();
+        }
+
         modal.classList.add('active');
         modal.setAttribute('aria-hidden', 'false');
-
-        // ⚡ NO bloqueamos el scroll del body.
-        // El modal tiene su propio scroll interno (max-height: 90vh + overflow-y: auto).
-        // El fondo simplemente queda tapado visualmente por el overlay.
+        modalStack.push(modalId);
     }
 
-    function closeModalFunc() {
-        if (!modal || isModalClosing) return;
+    function closeModalById(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
         if (!modal.classList.contains('active')) return;
-
-        isModalClosing = true;
 
         modal.classList.remove('active');
         modal.setAttribute('aria-hidden', 'true');
 
-        // Reanudar animaciones en el siguiente frame
-        requestAnimationFrame(() => {
-            resumeHeavyAnimations();
-            setTimeout(() => { isModalClosing = false; }, 150);
-        });
+        const index = modalStack.indexOf(modalId);
+        if (index > -1) modalStack.splice(index, 1);
+
+        if (modalStack.length === 0) {
+            requestAnimationFrame(() => {
+                unlockBodyScroll();
+                resumeHeavyAnimations();
+            });
+        }
     }
 
-    // ---- ABRIR ----
+    // ========================================================
+    // MODAL DE TRANSFERENCIA
+    // ========================================================
+    const transferButton = document.getElementById('transferButton');
+    const transferModal = document.getElementById('transferModal');
+    const closeModal = document.getElementById('closeModal');
+    const backToMain = document.getElementById('backToMain');
+
     if (transferButton) {
-        transferButton.addEventListener('click', openModal);
+        transferButton.addEventListener('click', () => openModalById('transferModal'));
     }
-
-    // ---- CERRAR: X ----
     if (closeModal) {
-        closeModal.addEventListener('click', closeModalFunc);
+        closeModal.addEventListener('click', () => closeModalById('transferModal'));
     }
-
-    // ---- CERRAR: VOLVER ----
     if (backToMain) {
-        backToMain.addEventListener('click', closeModalFunc);
+        backToMain.addEventListener('click', () => closeModalById('transferModal'));
     }
-
-    // ---- CERRAR: click en overlay ----
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModalFunc();
-            }
+    if (transferModal) {
+        transferModal.addEventListener('click', (e) => {
+            if (e.target === transferModal) closeModalById('transferModal');
         });
     }
 
-    // ---- CERRAR: ESC ----
+    // ========================================================
+    // MODAL DE MENÚ
+    // ========================================================
+    const menuButton = document.getElementById('menuButton');
+    const menuModal = document.getElementById('menuModal');
+    const closeMenuModal = document.getElementById('closeMenuModal');
+
+    if (menuButton) {
+        menuButton.addEventListener('click', () => openModalById('menuModal'));
+    }
+    if (closeMenuModal) {
+        closeMenuModal.addEventListener('click', () => closeModalById('menuModal'));
+    }
+    if (menuModal) {
+        menuModal.addEventListener('click', (e) => {
+            if (e.target === menuModal) closeModalById('menuModal');
+        });
+    }
+
+    // ========================================================
+    // MODAL DE PRODUCTOS
+    // ========================================================
+    const productsMainButton = document.getElementById('productsMainButton');
+    const productsModal = document.getElementById('productsModal');
+    const closeProductsModal = document.getElementById('closeProductsModal');
+    const backFromProducts = document.getElementById('backFromProducts');
+
+    if (productsMainButton) {
+        productsMainButton.addEventListener('click', () => openModalById('productsModal'));
+    }
+    if (closeProductsModal) {
+        closeProductsModal.addEventListener('click', () => closeModalById('productsModal'));
+    }
+    if (backFromProducts) {
+        backFromProducts.addEventListener('click', () => closeModalById('productsModal'));
+    }
+    if (productsModal) {
+        productsModal.addEventListener('click', (e) => {
+            if (e.target === productsModal) closeModalById('productsModal');
+        });
+    }
+
+    // ========================================================
+    // MODAL DE SERVICIOS & PRECIOS
+    // ========================================================
+    const servicesButton = document.getElementById('servicesButton');
+    const servicesModal = document.getElementById('servicesModal');
+    const closeServicesModal = document.getElementById('closeServicesModal');
+    const backFromServices = document.getElementById('backFromServices');
+
+    if (servicesButton) {
+        servicesButton.addEventListener('click', () => openModalById('servicesModal'));
+    }
+    if (closeServicesModal) {
+        closeServicesModal.addEventListener('click', () => closeModalById('servicesModal'));
+    }
+    if (backFromServices) {
+        backFromServices.addEventListener('click', () => closeModalById('servicesModal'));
+    }
+    if (servicesModal) {
+        servicesModal.addEventListener('click', (e) => {
+            if (e.target === servicesModal) closeModalById('servicesModal');
+        });
+    }
+
+    // ========================================================
+    // MODAL DE CLIENTES
+    // ========================================================
+    const clientsButton = document.getElementById('clientsButton');
+    const clientsModal = document.getElementById('clientsModal');
+    const closeClientsModal = document.getElementById('closeClientsModal');
+    const backFromClients = document.getElementById('backFromClients');
+
+    if (clientsButton) {
+        clientsButton.addEventListener('click', () => openModalById('clientsModal'));
+    }
+    if (closeClientsModal) {
+        closeClientsModal.addEventListener('click', () => closeModalById('clientsModal'));
+    }
+    if (backFromClients) {
+        backFromClients.addEventListener('click', () => closeModalById('clientsModal'));
+    }
+    if (clientsModal) {
+        clientsModal.addEventListener('click', (e) => {
+            if (e.target === clientsModal) closeModalById('clientsModal');
+        });
+    }
+
+    // ========================================================
+    // CERRAR CON ESC
+    // ========================================================
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
-            closeModalFunc();
+        if (e.key === 'Escape' && modalStack.length > 0) {
+            const topModalId = modalStack[modalStack.length - 1];
+            closeModalById(topModalId);
         }
     });
 
     // ========================================================
-    // COPIAR TEXTO
+    // COPIAR TEXTO  (UNIVERSAL: Safari iOS, Chrome, Firefox, Android)
     // ========================================================
+
     function showFeedback(btn) {
         if (btn.classList.contains('copied')) return;
 
@@ -315,25 +431,59 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000);
     }
 
-    function fallbackCopy(text, button) {
-        try {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.setAttribute('readonly', '');
-            textArea.style.position = 'fixed';
-            textArea.style.top = '0';
-            textArea.style.left = '0';
-            textArea.style.width = '1px';
-            textArea.style.height = '1px';
-            textArea.style.padding = '0';
-            textArea.style.border = 'none';
-            textArea.style.outline = 'none';
-            textArea.style.boxShadow = 'none';
-            textArea.style.background = 'transparent';
-            textArea.style.opacity = '0';
-            document.body.appendChild(textArea);
+    // Detección robusta de iOS (incluye iPad moderno que se reporta como Mac)
+    function isIOSDevice() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
 
-            if (navigator.userAgent.match(/ipad|iphone/i)) {
+    // Detección de Safari (incluye iOS y macOS)
+    function isSafariBrowser() {
+        const ua = navigator.userAgent;
+        const isSafari = /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
+        return isSafari || isIOSDevice();
+    }
+
+    /**
+     * Copia usando un textarea temporal.
+     * Esta es la forma MÁS compatible, funciona en todos los navegadores
+     * incluyendo Safari iOS, siempre que se ejecute de forma SÍNCRONA
+     * dentro del gesto del usuario (click).
+     */
+    function legacyCopy(text, button) {
+        // Crear textarea
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.setAttribute('readonly', '');
+        textArea.setAttribute('aria-hidden', 'true');
+
+        // Estilos: en iOS el textarea debe ser VISIBLE (opacity > 0),
+        // tener font-size >= 16px y NO tener pointer-events: none.
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = '0';
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        textArea.style.fontSize = '16px';
+        textArea.style.opacity = '0.01';
+        textArea.style.zIndex = '-1';
+
+        document.body.appendChild(textArea);
+
+        let success = false;
+
+        try {
+            if (isIOSDevice()) {
+                // iOS: la forma correcta es focus() + setSelectionRange()
+                textArea.focus();
+                textArea.setSelectionRange(0, text.length);
+
+                // Además, usar Range/Selection como refuerzo
                 const range = document.createRange();
                 range.selectNodeContents(textArea);
                 const selection = window.getSelection();
@@ -341,19 +491,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 selection.addRange(range);
                 textArea.setSelectionRange(0, text.length);
             } else {
+                textArea.focus();
                 textArea.select();
                 textArea.setSelectionRange(0, text.length);
             }
 
-            const success = document.execCommand('copy');
-            requestAnimationFrame(() => {
-                if (textArea.parentNode) textArea.parentNode.removeChild(textArea);
-            });
-
-            if (success) showFeedback(button);
+            success = document.execCommand('copy');
         } catch (err) {
-            console.warn('Error al copiar (fallback):', err);
+            console.warn('legacyCopy: execCommand falló:', err);
         }
+
+        document.body.removeChild(textArea);
+
+        if (success) {
+            showFeedback(button);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Intenta con Clipboard API moderna. Solo funciona en contexto seguro
+     * (HTTPS o localhost) y en navegadores modernos.
+     */
+    function modernCopy(text, button) {
+        return new Promise((resolve) => {
+            if (!navigator.clipboard || !navigator.clipboard.writeText) {
+                resolve(false);
+                return;
+            }
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    showFeedback(button);
+                    resolve(true);
+                })
+                .catch((err) => {
+                    console.warn('modernCopy: Clipboard API falló:', err);
+                    resolve(false);
+                });
+        });
     }
 
     document.querySelectorAll('.copy-button').forEach(btn => {
@@ -362,22 +538,57 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
 
             const targetId = btn.getAttribute('data-copy');
-            if (!targetId) return;
+            if (!targetId) {
+                console.warn('Botón sin data-copy:', btn);
+                return;
+            }
+
             const textElement = document.getElementById(targetId);
-            if (!textElement) return;
+            if (!textElement) {
+                console.warn('No se encontró el elemento con id:', targetId);
+                return;
+            }
 
             const textToCopy = textElement.textContent.trim();
-
-            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => showFeedback(btn))
-                    .catch(() => fallbackCopy(textToCopy, btn));
-            } else {
-                fallbackCopy(textToCopy, btn);
+            if (!textToCopy) {
+                console.warn('El elemento está vacío:', targetId);
+                return;
             }
+
+            // ============================================================
+            // ESTRATEGIA UNIVERSAL:
+            // 1. Intentar SIEMPRE primero legacyCopy (execCommand) porque es
+            //    SÍNCRONO y ocurre dentro del gesto del usuario. Funciona en
+            //    Safari iOS, Chrome, Firefox, Edge, Android, etc.
+            // 2. Si legacyCopy falla, intentar modernCopy (Clipboard API)
+            //    como respaldo para navegadores que bloquean execCommand.
+            // ============================================================
+
+            console.log('Intentando copiar:', textToCopy, '| iOS:', isIOSDevice(), '| Safari:', isSafariBrowser());
+
+            if (legacyCopy(textToCopy, btn)) {
+                console.log('✅ Copiado con legacyCopy (execCommand)');
+                return;
+            }
+
+            console.warn('legacyCopy falló, intentando Clipboard API...');
+
+            modernCopy(textToCopy, btn).then((ok) => {
+                if (ok) {
+                    console.log('✅ Copiado con Clipboard API');
+                } else {
+                    console.warn('❌ Todos los métodos fallaron. Mostrando prompt.');
+                    window.prompt('Copia manualmente este texto:', textToCopy);
+                }
+            });
         });
     });
 
     // ========================================================
-    console.log("✅ XoloTech - Perfil cargado correctamente (fondo con imagen)");
+    console.log("✅ XoloTech - Perfil cargado correctamente");
+    console.log("   Modales activos: menú, productos, servicios, clientes, transferencia");
+    console.log("   Secure context:", window.isSecureContext);
+    console.log("   Clipboard API disponible:", !!(navigator.clipboard && navigator.clipboard.writeText));
+    console.log("   Es iOS:", isIOSDevice());
+    console.log("   Es Safari:", isSafariBrowser());
 });
